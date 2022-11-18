@@ -1,0 +1,51 @@
+<app-breadcrumb [title]="'Register'" [breadcrumb]="'Register'"></app-breadcrumb>
+<!-- section start -->
+<section class="register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>create account</h3>
+                <div class="theme-card">
+                    <form [formGroup]="registerForm" (ngSubmit)="register()" class="theme-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Name">Name</label>
+                                <input type="text" formControlName="Name" class="form-control" name="Name" id="Name" placeholder="First Name" >
+                                <div *ngIf="submitted && f.Name.errors" >
+                                    <div *ngIf="f.Name.errors.required" style="color: red;">First Name is required</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone">Phone</label>
+                                <input type="text" formControlName="phone" class="form-control" id="phone" name="phone" placeholder="Last Name">
+                                <div *ngIf="submitted && f.phone.errors">
+                                    <div style="color: red;" *ngIf="f.phone.errors.required">First Name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="email">email</label>
+                                <input type="email" formControlName="email" class="form-control" id="email" name="email" placeholder="Email">
+                                <div *ngIf="submitted && f.email.errors">
+                                    <div *ngIf="f.email.errors.required" style="color: red;">Email is required</div>
+                                    <div *ngIf="f.email.errors.email" style="color: red;">Email must be a valid email address</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Password">Password</label>
+                                <input type="password" formControlName="password" name="Password" class="form-control" id="Password" placeholder="Enter your password">
+                                <div *ngIf="submitted && f.password.errors">
+                                    <div *ngIf="f.password.errors.required" style="color: red;">Password is required</div>
+                                    <div *ngIf="f.password.errors.minlength"  style="color: red;">Password must be at least 6 characters</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button  type="submit" class="btn btn-solid">create Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
