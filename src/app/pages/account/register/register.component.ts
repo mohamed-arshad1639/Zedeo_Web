@@ -27,14 +27,18 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group(
       {
-        Name: ["", Validators.required],
-        phone: ["", Validators.required],
-        email: ["", [Validators.required, Validators.email]],
-        password: ["", [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ["", Validators.required],
-        acceptTerms: [false, Validators.requiredTrue],
+        Name: ['', [Validators.required]],
+        password: ['', [Validators.required,]],
+        phone: ["", Validators.required,],
+        email: ["", [Validators.required, ]],
+        // confirmPassword: ["", Validators.required],
+        // acceptTerms: [false, Validators.requiredTrue],
       },
       {
+        // Validators.pattern('[a-zA-Z ]*')
+        // Validators.pattern('[a-zA-Z0-9]*'),Validators.minLength(6)
+        // Validators.pattern('[0-9]'
+        // Validators.email
         // validator: MustMatch('password', 'confirmPassword')
       }
     );
@@ -52,30 +56,26 @@ export class RegisterComponent implements OnInit {
     let email = this.registerForm.value.email;
     let password = this.registerForm.value.password;
 
-    console.log(" Name", Name, "phone", phone, "email", password, "password");
-    console.log("valid or not", this.registerForm.valid);
+    // console.log(" Name", Name, "phone", phone, "email", password, "password");
+    // console.log("valid or not", this.registerForm.valid);
 
-    // if (this.registerForm.valid) {
-    debugger;
-    this.authService.register(Name, phone, email, password).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.toastr.success("", data);
-        // let go = this.authService.setDataintoService(data);
-        this.router.navigateByUrl('/pages/otpverification',{ state: data });
-
-
-      },
-      error: (err) => {
-        this.errorMessage = err.error.message;
-        this.toastr.error("", this.errorMessage);
-        console.log("err", err);
-      },
-    });
-    // }
-    // else {
-    //   alert("invalid form")
-    // }
+    if (this.registerForm.valid) {
+      debugger;
+      this.authService.register(Name, phone, email, password).subscribe({
+        next: (data) => {
+          console.log("register sucecss",data);
+          this.toastr.success("", data);
+          // let go = this.authService.setDataintoService(data);
+          this.router.navigateByUrl("/pages/otpverification", { state: data });
+        },
+        error: (err) => {
+          console.log("register err data", err);
+          this.errorMessage = err.error.message;
+          this.toastr.error("", this.errorMessage);
+        },
+      });
+    } else {
+      this.toastr.error('Please Enter  Valid Details','Invalid Form')
+    }
   }
 }
-// }

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
-const TOKEN_KEY = 'auth-token';
-const USER_KEY = 'auth-user';
+const TOKEN_KEY = 'token';
+const USER_KEY = 'name';
+const CUSTID_KEY='CUST_ID';
+const Email_KEY='email';
+const Phone_KEY='Phone'
 
 @Injectable({
   providedIn: 'root'
@@ -35,4 +38,45 @@ export class TokenStorageService {
 
     return {};
   }
+  public saveEmail(email: any): void {
+    window.sessionStorage.removeItem(Email_KEY);
+    window.sessionStorage.setItem(Email_KEY, JSON.stringify(email));
+  }
+
+  public getEmail(): any {
+    const email = window.sessionStorage.getItem(Email_KEY);
+    if (email) {
+      return JSON.parse(email);
+    }
+
+    return {};
+  }
+  public saveCustId(custId: any): void {
+    window.sessionStorage.removeItem(CUSTID_KEY);
+    window.sessionStorage.setItem(CUSTID_KEY, JSON.stringify(custId));
+  }
+
+  public getCustId(): any {
+    const custID = window.sessionStorage.getItem(CUSTID_KEY);
+    if (custID) {
+      return JSON.parse(custID);
+    }
+
+    return {};
+  }
+  public savePhoneNumber(phone: any): void {
+    window.sessionStorage.removeItem(Phone_KEY);
+    window.sessionStorage.setItem(Phone_KEY, JSON.stringify(phone));
+  }
+
+  public getPhoneNumber(): any {
+    const Phone= window.sessionStorage.getItem(Phone_KEY);
+    if (Phone) {
+      return JSON.parse(Phone);
+    }
+
+    return {};
+  }
+
+
 }

@@ -36,14 +36,14 @@ export class OtpVerificationComponent implements OnInit {
     this.otpFinaldata);
     
 
-    this.authService.myMethod$
+    // this.authService.myMethod$
     
-    .subscribe((data) => {
-      console.log("dataaaaaaaopttttttt",data);
-      this.otpFinaldata=data
-      this.otpFinaldata="okkkkkk"
-    }
-    );
+    // .subscribe((data) => {
+    //   console.log("dataaaaaaaopttttttt",data);
+    //   this.otpFinaldata=data
+    //   this.otpFinaldata="okkkkkk"
+    // }
+    // );
 
      console.log("this.otpFinaldata",this.otpFinaldata);
      
