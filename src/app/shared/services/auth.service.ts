@@ -14,26 +14,18 @@ const AUTH_API = 'http://18.208.225.35/api/user/';
   providedIn: 'root'
 })
 export class AuthService {
-  
-  otpData:any
- 
-  // myMethod$: Observable<any>;
-  // public myMethodSubject = new Subject<any>();
 
-  // private approvalStageMessage = new BehaviorSubject('Basic Approval is required!');
-  // currentApprovalStageMessage = this.approvalStageMessage.asObservable();
+  myMethod$: Observable<any>;
+  public myMethodSubject = new BehaviorSubject<any>("");
 
   constructor( private http: HttpClient, ) { 
-
-    // this.myMethod$ = this.myMethodSubject.asObservable()
-    
+    this.myMethod$ = this.myMethodSubject.asObservable()
   }
+
+  //function for Data sharing 
+
   setDataintoService(data){
-
-    // this.myMethodSubject.next(data)
-        // this.myMethodSubject.next("okkkkkkkkkkkkkk")
-
-    return true;
+    this.myMethodSubject.next(data)
   }
   
 
@@ -43,6 +35,14 @@ export class AuthService {
     return this.http.post(AUTH_API + 'login', {
       email,
       password
+    });
+  }
+
+  // otp login api call
+
+  otplogin(phone: string): Observable<any> {
+    return this.http.post(AUTH_API + 'otp-login', {
+      phone
     });
   }
 
@@ -57,11 +57,11 @@ export class AuthService {
     });
     
     
-  //  otp verification call
+  //  phoneverification call
 
   }
 
-  otpVerification (CUST_ID :number,email:string,name:string,password:string,phone:string,otp:string): Observable<any> {
+  phoneVerification (CUST_ID :number,email:string,name:string,password:string,phone:string,otp:string): Observable<any> {
     return this.http.post(AUTH_API+'phone-verification', {
       CUST_ID ,
       email,
@@ -71,4 +71,20 @@ export class AuthService {
       otp
     });
   }
+  
+  otpVerification (CUST_ID :number,email:string,name:string,password:string,phone:string,otp:string): Observable<any> {
+    return this.http.post(AUTH_API+'otp-verification', {
+      CUST_ID ,
+      email,
+      name ,
+      password ,
+      phone ,
+      otp
+    });
+  }
+
+
+
+
+
 }

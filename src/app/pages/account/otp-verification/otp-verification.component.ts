@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/shared/services/auth.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { TokenStorageService } from "src/app/shared/services/token-storage.service";
 
 @Component({
   selector: "app-otp-verification",
@@ -9,91 +10,208 @@ import { ToastrService } from "ngx-toastr";
   styleUrls: ["./otp-verification.component.scss"],
 })
 export class OtpVerificationComponent implements OnInit {
-
-  otpFinaldata:any 
+  credentialData: any;
+  verificationtype: any;
   col1: any;
   col2: any;
   col3: any;
   col4: any;
   errorMessage: any;
   otp: any;
-  CUST_ID :any
-  email:any
-  name:any
-  password:any
-  phone:any 
+  CUST_ID: any;
+  email: any;
+  name: any;
+  password: any;
+  phone: any;
+  display: any;
+  otpButtonFlag: boolean = false;
+  SlicedPhoneNumber: any;
+  inputs: any;
 
-  constructor(private authService: AuthService, private router: Router,private toaster:ToastrService) {
-
-     
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private toaster: ToastrService,
+    private route: ActivatedRoute,
+    private tokenService: TokenStorageService
+  ) {
+    this.timer(1);
+   
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      console.log(params); // { orderby: "price" }
+      this.verificationtype = params.type;
+      console.log("verification type", this.verificationtype); // price
+    });
 
-    this.otpFinaldata=history.state
+    this.authService.myMethod$.subscribe((data) => {
+      this.credentialData = data;
+      this.SlicedPhoneNumber = this.credentialData.phone.slice(6, 10);
 
-    console.log("state",
-    this.otpFinaldata);
-    
-
-    // this.authService.myMethod$
-    
-    // .subscribe((data) => {
-    //   console.log("dataaaaaaaopttttttt",data);
-    //   this.otpFinaldata=data
-    //   this.otpFinaldata="okkkkkk"
-    // }
-    // );
-
-     console.log("this.otpFinaldata",this.otpFinaldata);
-     
-    // this.CUST_ID=data.CUST_ID
-    // this.otp=data.otp
-    // this.email=data.email
-    // this.name=data.name
-    // this.phone=data.phone
-
-
-      
-      
-  }
-
- 
-  // getdata(){
-
-      
-
-  // }
- 
-  
- 
-  verifyOtp() {
-    debugger
-    console.log("stateqwer",
-    this.otpFinaldata);
-
-    let CUST_ID = this.otpFinaldata.CUST_ID;
-    let email = this.otpFinaldata.email;
-    let name = this.otpFinaldata.name;
-    let password = this.otpFinaldata.password;
-    let phone = this.otpFinaldata.phone;
-    this.otp = this.col1 + this.col2 + this.col3 + this.col4;
-
-    console.log("mail",email);
-    
-
-    this.authService.otpVerification(CUST_ID,email,name,password,phone,this.otp).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.toaster.success(data,'')
-        this.router.navigateByUrl("/pages/login");
-      },
-      error: (err) => {
-        console.log("err",err);
-        
-        this.errorMessage = err.error.message;
-        this.toaster.error(this.errorMessage,'')
-      },
+      console.log("SlicedPhoneNumber", this.SlicedPhoneNumber);
+      console.log("credentialData", this.credentialData);
     });
   }
-}
+
+  verifyOtp() {
+    let CUST_ID = this.credentialData.CUST_ID;
+    let email = this.credentialData.email;
+    let name = this.credentialData.name;
+    let password = this.credentialData.password;
+    let phone = this.credentialData.phone;
+    this.otp = this.col1 + this.col2 + this.col3 + this.col4;
+    if (this.verificationtype === "phoneVerification") {
+      /*phone verification otp */
+
+      debugger;
+      this.authService
+        .phoneVerification(CUST_ID, email, name, password, phone, this.otp)
+        .subscribe({
+          next: (data) => {
+            console.log(data);
+            this.toaster.success(data, "");
+            this.router.navigateByUrl("/pages/login");
+          },
+          error: (err) => {
+            console.log("otp err", err);
+            this.errorMessage = err.error;
+            this.toaster.error(this.errorMessage, "");
+          },
+        });
+    } else if (this.verificationtype === "otpverification") {
+      debugger;
+
+      /*phone login otp */
+
+      this.authService
+        .otpVerification(CUST_ID, email, name, password, phone, this.otp)
+        .subscribe({
+          next: (data) => {
+            console.log("otp logrd in data", data);
+
+            if (data.token) {
+              let CUST_ID = data.CUST_ID;
+              let email = data.email;
+              let name = data.name;
+              let phone = data.phone;
+              let token = data.token;
+
+              CUST_ID ? this.tokenService.saveCustId(CUST_ID) : (CUST_ID = "");
+              name ? this.tokenService.saveUser(name) : (name = "");
+              email ? this.tokenService.saveEmail(email) : (email = "");
+              phone ? this.tokenService.savePhoneNumber(phone) : (phone = "");
+              token ? this.tokenService.saveToken(token) : (token = "");
+              this.toaster.success("Successfully LogedIn", "");
+              this.router.navigateByUrl("home/fashion");
+            } else {
+              this.toaster.error("Something wentWrong");
+            }
+          },
+          error: (err) => {
+            console.log("otp err", err);
+            this.errorMessage = err.error;
+            this.toaster.error(this.errorMessage, "");
+          },
+        });
+    }
+  }
+  timer(minute) {
+    // let minute = 1;
+    // const inputs = document.querySelectorAll("#otp > *[id]");
+    // console.log("inputs33333", inputs);
+
+    let seconds: number = minute * 60;
+    let textSec: any = "0";
+    let statSec: number = 60;
+
+    const prefix = minute < 10 ? "0" : "";
+
+    const timer = setInterval(() => {
+      seconds--;
+      if (statSec != 0) statSec--;
+      else statSec = 59;
+
+      if (statSec < 10) {
+        textSec = "0" + statSec;
+      } else textSec = statSec;
+
+      this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
+
+      if (seconds == 0) {
+        console.log("finished");
+
+        this.otpButtonFlag = true;
+
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+  // changeEvent(event){
+  //   // document.addEventListener("DOMContentLoaded", function (even:any) {
+  //     function OTPInput() {
+  //       const inputs = document.querySelectorAll("#otp > *[id]");
+  // for (let i = 0; i < inputs.length; i++) {
+  //   inputs[i].addEventListener("keydown", function (event:any) {
+  //     if (event.key === "Backspace") {
+  //       inputs[i].value = "";
+  //       if (i !== 0) inputs[i - 1].focus();
+  //     } else {
+  //       if (i === inputs.length - 1 && inputs[i].value !== "") {
+  //         return true;
+  //       } else if (event.keyCode > 47 && event.keyCode < 58) {
+  //         inputs[i].value = event.key;
+  //         if (i !== inputs.length - 2) inputs[i + 1].focus();
+  //         event.preventDefault();
+  //       } else if (event.keyCode > 64 && event.keyCode < 91) {
+  //         inputs[i].value = String.fromCharCode(event.keyCode);
+  //         if (i !== inputs.length - 1) inputs[i + 1].focus();
+  //         event.preventDefault();
+  //       }
+  //     }
+  //   });
+  // }
+  //     }
+  //     OTPInput();
+  //   });
+
+  // }
+  // changeEvent(event){
+  //     document.addEventListener("DOMContentLoaded", function (event:any) {
+  //     function OTPInput() {
+  //   this.inputs=[]
+  //     this.inputs = document.querySelectorAll("#otp > *[id]");
+  //     console.log("this.inputs",this.inputs);
+  //       console.log("this.inputs",this.inputs);
+        
+  //       for (let i = 0; i < this.inputs.length; i++) {
+  //         this.inputs[i].addEventListener("keydown", function (event: any) {
+  //           if (event.key === "Backspace") {
+  //             this.inputs[i].value = "";
+  //             if (i !== 0) this.inputs[i - 1].focus();
+  //           } else {
+  //             if (i === this.inputs.length - 1 && this.inputs[i].value !== "") {
+  //               return true;
+  //             } else if (event.keyCode > 47 && event.keyCode < 58) {
+  //               this.inputs[i].value = event.key;
+  //               if (i !== this.inputs.length - 2) this.inputs[i + 1].focus();
+  //               event.preventDefault();
+  //             } else if (event.keyCode > 64 && event.keyCode < 91) {
+  //               this.inputs[i].value = String.fromCharCode(event.keyCode);
+  //               if (i !== this.inputs.length - 1) this.inputs[i + 1].focus();
+  //               event.preventDefault();
+  //             }
+  //           }
+  //         });
+  //       }
+
+       
+  //     }
+  //     OTPInput();
+  //   });
+    
+  //   }
+    
+  }
+

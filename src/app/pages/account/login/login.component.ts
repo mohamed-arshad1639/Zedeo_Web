@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
             email?this.tokenService.saveEmail(email):email=''
             phone?this.tokenService.savePhoneNumber(phone):phone=''
             token?this.tokenService.saveToken(token):token=''
-            this.Toaster.success('Successfully Registerd','')
+            this.Toaster.success('Successfully LoggedIn','')
             this.router.navigateByUrl('home/fashion')
 
           }

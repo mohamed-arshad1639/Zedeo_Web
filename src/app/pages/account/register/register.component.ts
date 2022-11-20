@@ -56,6 +56,7 @@ export class RegisterComponent implements OnInit {
     let email = this.registerForm.value.email;
     let password = this.registerForm.value.password;
 
+
     // console.log(" Name", Name, "phone", phone, "email", password, "password");
     // console.log("valid or not", this.registerForm.valid);
 
@@ -64,13 +65,13 @@ export class RegisterComponent implements OnInit {
       this.authService.register(Name, phone, email, password).subscribe({
         next: (data) => {
           console.log("register sucecss",data);
-          this.toastr.success("", data);
-          // let go = this.authService.setDataintoService(data);
-          this.router.navigateByUrl("/pages/otpverification", { state: data });
+          this.authService.setDataintoService(data);
+          this.router.navigate(["/pages/otpverification"],{queryParams: { type: 'phoneVerification'}});
+          // this.router.navigateByUrl("/pages/otpverification", { state: data });
         },
         error: (err) => {
           console.log("register err data", err);
-          this.errorMessage = err.error.message;
+          this.errorMessage = err.error;
           this.toastr.error("", this.errorMessage);
         },
       });
