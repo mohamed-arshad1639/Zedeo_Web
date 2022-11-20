@@ -36,7 +36,6 @@ export class OtpVerificationComponent implements OnInit {
     private tokenService: TokenStorageService
   ) {
     this.timer(1);
-   
   }
 
   ngOnInit(): void {
@@ -56,6 +55,7 @@ export class OtpVerificationComponent implements OnInit {
   }
 
   verifyOtp() {
+    debugger;
     let CUST_ID = this.credentialData.CUST_ID;
     let email = this.credentialData.email;
     let name = this.credentialData.name;
@@ -119,9 +119,6 @@ export class OtpVerificationComponent implements OnInit {
   }
   timer(minute) {
     // let minute = 1;
-    // const inputs = document.querySelectorAll("#otp > *[id]");
-    // console.log("inputs33333", inputs);
-
     let seconds: number = minute * 60;
     let textSec: any = "0";
     let statSec: number = 60;
@@ -148,70 +145,4 @@ export class OtpVerificationComponent implements OnInit {
       }
     }, 1000);
   }
-  // changeEvent(event){
-  //   // document.addEventListener("DOMContentLoaded", function (even:any) {
-  //     function OTPInput() {
-  //       const inputs = document.querySelectorAll("#otp > *[id]");
-  // for (let i = 0; i < inputs.length; i++) {
-  //   inputs[i].addEventListener("keydown", function (event:any) {
-  //     if (event.key === "Backspace") {
-  //       inputs[i].value = "";
-  //       if (i !== 0) inputs[i - 1].focus();
-  //     } else {
-  //       if (i === inputs.length - 1 && inputs[i].value !== "") {
-  //         return true;
-  //       } else if (event.keyCode > 47 && event.keyCode < 58) {
-  //         inputs[i].value = event.key;
-  //         if (i !== inputs.length - 2) inputs[i + 1].focus();
-  //         event.preventDefault();
-  //       } else if (event.keyCode > 64 && event.keyCode < 91) {
-  //         inputs[i].value = String.fromCharCode(event.keyCode);
-  //         if (i !== inputs.length - 1) inputs[i + 1].focus();
-  //         event.preventDefault();
-  //       }
-  //     }
-  //   });
-  // }
-  //     }
-  //     OTPInput();
-  //   });
-
-  // }
-  // changeEvent(event){
-  //     document.addEventListener("DOMContentLoaded", function (event:any) {
-  //     function OTPInput() {
-  //   this.inputs=[]
-  //     this.inputs = document.querySelectorAll("#otp > *[id]");
-  //     console.log("this.inputs",this.inputs);
-  //       console.log("this.inputs",this.inputs);
-        
-  //       for (let i = 0; i < this.inputs.length; i++) {
-  //         this.inputs[i].addEventListener("keydown", function (event: any) {
-  //           if (event.key === "Backspace") {
-  //             this.inputs[i].value = "";
-  //             if (i !== 0) this.inputs[i - 1].focus();
-  //           } else {
-  //             if (i === this.inputs.length - 1 && this.inputs[i].value !== "") {
-  //               return true;
-  //             } else if (event.keyCode > 47 && event.keyCode < 58) {
-  //               this.inputs[i].value = event.key;
-  //               if (i !== this.inputs.length - 2) this.inputs[i + 1].focus();
-  //               event.preventDefault();
-  //             } else if (event.keyCode > 64 && event.keyCode < 91) {
-  //               this.inputs[i].value = String.fromCharCode(event.keyCode);
-  //               if (i !== this.inputs.length - 1) this.inputs[i + 1].focus();
-  //               event.preventDefault();
-  //             }
-  //           }
-  //         });
-  //       }
-
-       
-  //     }
-  //     OTPInput();
-  //   });
-    
-  //   }
-    
-  }
-
+}
