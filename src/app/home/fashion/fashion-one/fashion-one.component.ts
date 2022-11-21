@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductSlider } from '../../../shared/data/slider';
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
+import { HomepageService } from 'src/app/shared/services/homepage.service';
 
 @Component({
   selector: 'app-fashion-one',
@@ -13,8 +14,9 @@ export class FashionOneComponent implements OnInit {
   public products: Product[] = [];
   public productCollections: any[] = [];
   public active;
+  sliders:any
 
-  constructor(public productService: ProductService) {
+  constructor(public productService: ProductService ,private homePageService:HomepageService) {
     this.productService.getProducts.subscribe(response => {
       this.products = response.filter(item => item.type == 'fashion');
       // Get Product Collection
@@ -25,19 +27,46 @@ export class FashionOneComponent implements OnInit {
         })
       })
     });
+
+    this.getBannerData()
   }
 
   public ProductSliderConfig: any = ProductSlider;
 
-  public sliders = [{
-    title: 'welcome to fashion',
-    subTitle: 'Men fashion',
-    image: 'assets/images/slider/1.jpg'
-  }, {
-    title: 'welcome to fashion',
-    subTitle: 'Women fashion',
-    image: 'assets/images/slider/2.jpg'
-  }]
+  
+
+ 
+  getBannerData(){
+     this.homePageService.getHomeSlider().subscribe({
+      next: (data) => {
+        this.sliders=data
+        console.log("sliderss sucecss",data);
+        console.log("sliderss",this.sliders);
+      },
+      error: (err) => {
+        console.log("sliderss err data", err);
+        // this.errorMessage = err.error;
+        // this.toastr.error("", this.errorMessage);
+      },
+    });
+    // ID
+    // : 
+    // "PRO_ID10001"
+    // image
+    // : 
+    // "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1668794841/Banner/ilidldghq00lrndhnr3x.jpg"
+    // subTitle
+    // : 
+    // "New Poducts"
+    // title
+    // : 
+    // "New Collection"
+    // _id
+    // : 
+    // "6377c9df8a0a5c5ad6fc6c1a"
+
+     
+  }
 
   // Collection banner
   public collections = [{

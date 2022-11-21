@@ -62,7 +62,8 @@ export class RegisterComponent implements OnInit {
 
     if (this.registerForm.valid) {
       debugger;
-      this.authService.register(Name, phone, email, password).subscribe({
+      this.authService.register(Name, phone, email, password)
+      .subscribe({
         next: (data) => {
           console.log("register sucecss",data);
           this.authService.setDataintoService(data);
