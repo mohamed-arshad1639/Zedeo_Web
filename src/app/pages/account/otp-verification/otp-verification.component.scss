@@ -12,9 +12,11 @@
     justify-content: center;
     align-items: center
 }
-
+// #49bfb0
+// #6cc284
+// #86c54f
 .card h6 {
-    color: red;
+    color:#86c54f;
     font-size: 20px
 }
 
@@ -47,18 +49,18 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .card-2 .content a {
-    color: red
+    color: #49bfb0
 }
 
 .form-control:focus {
     box-shadow: none;
-    border: 2px solid red
+    border: 2px solid #49bfb0
 }
 
 .validate {
     border-radius: 20px;
     height: 40px;
-    background-color: red;
-    border: 1px solid red;
+    background-color: #6cc284; 
+    border: 1px solid #86c54f;
     width: 140px
 }

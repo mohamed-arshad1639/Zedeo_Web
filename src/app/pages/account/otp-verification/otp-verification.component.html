@@ -18,30 +18,35 @@
           id="first"
           maxlength="1"
           [(ngModel)]="col1"
+          autofocus
+          (keyup)="focusColoumntwo.focus()"
         />
-        <input
+        <input #focusColoumntwo
           class="m-2 text-center form-control rounded"
           type="text"
           id="second"
           maxlength="1"
           [(ngModel)]="col2"
+          (keyup)="focusColoumnthree.focus()"
         />
-        <input
+        <input #focusColoumnthree
           class="m-2 text-center form-control rounded"
           type="text"
           id="third"
           maxlength="1"
           [(ngModel)]="col3"
+          (keyup)="focusColoumnFour.focus()"
         />
-        <input
+        <input #focusColoumnFour
           class="m-2 text-center form-control rounded"
           type="text"
           id="fourth"
           maxlength="1"
           [(ngModel)]="col4"
+          (keyup)="focusColoumnFour.focus()" 
         />
       </div>
-      <div>{{ display }}</div>
+      <div *ngIf="SlicedPhoneNumber" >{{ display }}</div>
       <div *ngIf="!otpButtonFlag" class="mt-4">
         <button class="btn btn-danger px-4 validate" (click)="verifyOtp()">
           Validate
@@ -55,3 +60,17 @@
     </div>
   </div>
 </div>
+
+<!-- <div class="ibox-content login-form">
+  <div class="form-group">
+      <input type="text" class="form-control" id="inputUername" placeholder="Username" [(ngModel)]="loginData.username" autofocus  (keyup.enter)="focusablePassword.focus()">
+  </div>
+  <div class="form-group">
+      <input #focusablePassword type="password" class="form-control" id="inputPassword" placeholder="Password" [(ngModel)]="loginData.password" (keyup.enter)="focusableSubmit.focus()" >
+  </div>
+  <button #focusableSubmit type="submit" icon="fa fa-sign-in" class="btn btn-primary" [disabled]="loginData.username == '' || loginData.password == ''"
+      (click)="login()">Login</button>
+  <div class="login-error-message" *ngIf="content.loginFailed">
+      <p>Invalid username or password</p>
+  </div>
+</div> -->

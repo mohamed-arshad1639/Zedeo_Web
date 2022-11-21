@@ -55,13 +55,17 @@ export class OtpVerificationComponent implements OnInit {
   }
 
   verifyOtp() {
+    debugger
+    this.otp = this.col1 + this.col2 + this.col3 + this.col4;
+    console.log("this.col1",this.col1);
     debugger;
     let CUST_ID = this.credentialData.CUST_ID;
     let email = this.credentialData.email;
     let name = this.credentialData.name;
     let password = this.credentialData.password;
     let phone = this.credentialData.phone;
-    this.otp = this.col1 + this.col2 + this.col3 + this.col4;
+    
+   
     if (this.verificationtype === "phoneVerification") {
       /*phone verification otp */
 
