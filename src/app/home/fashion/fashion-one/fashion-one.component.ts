@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductSlider } from '../../../shared/data/slider';
+import { ProductSlider,CategorySlider } from '../../../shared/data/slider';
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
 import { HomepageService } from 'src/app/shared/services/homepage.service';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+
 
 @Component({
   selector: 'app-fashion-one',
@@ -15,6 +17,9 @@ export class FashionOneComponent implements OnInit {
   public productCollections: any[] = [];
   public active;
   sliders:any
+  categories:any
+  images:any
+  responsiveOptions;
 
   constructor(public productService: ProductService ,private homePageService:HomepageService) {
     this.productService.getProducts.subscribe(response => {
@@ -28,12 +33,46 @@ export class FashionOneComponent implements OnInit {
       })
     });
 
+    //get banner data
     this.getBannerData()
+    //get categoryData
+    this.getCategoryData()
+
+    this.responsiveOptions = [{
+      breakpoint: '1024px',
+      numVisible: 1,
+      numScroll: 3
+  }];
   }
 
   public ProductSliderConfig: any = ProductSlider;
+  public CategorySliderConfig:any  = CategorySlider;
+  customOptions: OwlOptions = {
+    loop: true,
+    autoplay: true,
+    center: true,
+    dots: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
 
-  
+    navSpeed: 6000,
+    autoHeight: false,
+    autoWidth: false,
+    responsive: {
+      0: {
+        items:1,
+      },
+      600: {
+        items:3 ,
+      },
+      1000: {
+        items: 6,
+      },
+    },
+  };
+
+ 
 
  
   getBannerData(){
@@ -48,24 +87,27 @@ export class FashionOneComponent implements OnInit {
         // this.errorMessage = err.error;
         // this.toastr.error("", this.errorMessage);
       },
-    });
-    // ID
-    // : 
-    // "PRO_ID10001"
-    // image
-    // : 
-    // "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1668794841/Banner/ilidldghq00lrndhnr3x.jpg"
-    // subTitle
-    // : 
-    // "New Poducts"
-    // title
-    // : 
-    // "New Collection"
-    // _id
-    // : 
-    // "6377c9df8a0a5c5ad6fc6c1a"
+    });     
+  }
 
-     
+  getCategoryData(){
+    this.homePageService.getCategories().subscribe({
+      next: (data) => {
+        this.categories=data
+        console.log("categories",this.categories);
+        
+        console.log("sliderss sucecss",data);
+        console.log("sliderss",this.sliders);
+      },
+      error: (err) => {
+        console.log("sliderss err data", err);
+        // this.errorMessage = err.error;
+        // this.toastr.error("", this.errorMessage);
+      },
+    });     
+
+    
+
   }
 
   // Collection banner

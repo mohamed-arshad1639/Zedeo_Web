@@ -3,27 +3,168 @@
 
 <!-- Home slider start-->
 <section class="p-0">
-  <app-slider 
-    [sliders]="sliders" 
+  <app-slider
+    [sliders]="sliders"
     [textClass]="'text-center'"
     [category]="'fashion'"
-    [buttonText]="'shop now'"> 
+    [buttonText]="'shop now'"
+  >
   </app-slider>
 </section>
 <!-- Home slider End -->
+<!-- Categories start-->
+<!-- <33333></33333> -->
+
+<section class="p-0">
+  <!-- <div class=""> -->
+  <div class="row">
+    <div class="wrapper">
+      <owl-carousel-o [options]="customOptions">
+        <ng-container  >
+          <ng-template *ngFor="let category of categories" carouselSlide >
+            <div class="row category-border">
+              <div class="col-sm-12 border-padding" [id]="category.id">
+                  <div class="category-banner">
+                      <div>
+                          <img [src]="category.image" class="img-fluid"  alt="">
+                      </div>
+                      <!-- `http://18.208.225.35/api/user/main/veiw-category-products/,${category.Category}` -->
+                      <div class="category-box">
+                          <a [routerLink]="['/shop/collection/left/sidebar']" [queryParams]="{ category: category.Category}">
+                              <h2>{{category.Category}}</h2>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+            <!-- <div class="col-sm-12"   [id]="category.id" carouselSlide >
+              <div class="category-banner">
+                <div>
+                  <img [src]="category.image" class="img-fluid" alt="" />
+                </div>
+                <div class="category-box">
+                  <a
+                    [routerLink]="['/shop/collection/left/sidebar']"
+                    [queryParams]="{ category: 'fashion' }"
+                  >
+                    <h3>{{ category.Category }}</h3>
+                  </a>
+                </div>
+              </div> -->
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+  </div>
+  <!-- </div> -->
+</section>
+
+
+ <section class="section-b-space">
+  <div class="row">
+      <div class="col">
+          <div class="slide-6 no-arrow">
+              <owl-carousel-o [options]="CategorySliderConfig">
+                  <ng-template *ngFor="let category of categories" carouselSlide>
+                      <div class="category-block">
+                          <a [routerLink]="['/shop/collection/left/sidebar']" [queryParams]="{ category: 'shoes'}">
+                              <div class="category-image">
+                                  <img [src]="category.image" alt="" class="w-auto">
+                              </div>
+                          </a>
+                          <div class="category-details">
+                              <a [routerLink]="['/shop/collection/left/sidebar']" [queryParams]="{ category: 'shoes'}">
+                                  <h5>{{category.Category}}</h5>
+                              </a>
+                          </div>
+                      </div>
+                  </ng-template>
+              </owl-carousel-o>
+          </div>
+      </div>
+  </div>
+</section> 
+<!-- </div> -->
+
+<!-- <div class="container"> -->
+<!-- <section class="section-b-space border-section border-top-0">
+      <div class="row">
+          <div class="col">
+              <div class="slide-6 no-arrow">
+                  <owl-carousel-o [options]="CategorySliderConfig">
+                      <ng-container *ngFor="let category of categories">
+                          <ng-template carouselSlide>
+                              <div class="category-block">
+                                  <a [routerLink]="['/shop/collection/left/sidebar']"
+                                     [queryParams]="{ category: 'shoes'}">
+                                      <div class="category-image">
+                                          <img [src]="category.image" alt="" class="w-auto">
+                                      </div>
+                                  </a>
+                                  <div class="category-details">
+                                      <a [routerLink]="['/shop/collection/left/sidebar']"
+                                         [queryParams]="{ category: 'shoes'}">
+                                          <h5>{{ category.title }}</h5>
+                                      </a>
+                                  </div>
+                              </div>
+                          </ng-template>
+                      </ng-container>
+                  </owl-carousel-o>
+              </div>
+          </div>
+      </div>
+  </section> -->
+<!-- </div> -->
+<!-- categories End -->
+
+<!-- collectionbannerthree start -->
+<section class="pb-0">
+  <div class="container">
+    <div class="row partition2">
+      <div class="col-md-3" *ngFor="let collection of collections2">
+        <a
+          [routerLink]="['/shop/collection/left/sidebar']"
+          [queryParams]="{ category: 'fashion' }"
+        >
+          <div class="collection-banner p-right text-center">
+            <img
+              [src]="collection.image"
+              class="img-fluid"
+              alt="collection-banner"
+            />
+            <div class="contain-banner">
+              <div>
+                <h4>{{ collection.save }}</h4>
+                <h2>{{ collection.title }}</h2>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- collection banner start-->
 <section class="pb-0">
   <div class="container">
     <div class="row partition2">
       <div class="col-md-6" *ngFor="let collection of collections">
-        <a [routerLink]="['/shop/collection/left/sidebar']" [queryParams]="{ category: 'fashion'}">
+        <a
+          [routerLink]="['/shop/collection/left/sidebar']"
+          [queryParams]="{ category: 'fashion' }"
+        >
           <div class="collection-banner p-right text-center">
-            <img [src]="collection.image" class="img-fluid" alt="collection-banner">
+            <img
+              [src]="collection.image"
+              class="img-fluid"
+              alt="collection-banner"
+            />
             <div class="contain-banner">
               <div>
-                <h4>{{collection.save}}</h4>
-                <h2>{{collection.title}}</h2>
+                <h4>{{ collection.save }}</h4>
+                <h2>{{ collection.title }}</h2>
               </div>
             </div>
           </div>
@@ -39,13 +180,20 @@
   <div class="container">
     <div class="row partition2">
       <div class="col-md-4" *ngFor="let collection of collections2">
-        <a [routerLink]="['/shop/collection/left/sidebar']" [queryParams]="{ category: 'fashion'}">
+        <a
+          [routerLink]="['/shop/collection/left/sidebar']"
+          [queryParams]="{ category: 'fashion' }"
+        >
           <div class="collection-banner p-right text-center">
-            <img [src]="collection.image" class="img-fluid" alt="collection-banner">
+            <img
+              [src]="collection.image"
+              class="img-fluid"
+              alt="collection-banner"
+            />
             <div class="contain-banner">
               <div>
-                <h4>{{collection.save}}</h4>
-                <h2>{{collection.title}}</h2>
+                <h4>{{ collection.save }}</h4>
+                <h2>{{ collection.title }}</h2>
               </div>
             </div>
           </div>
@@ -55,7 +203,6 @@
   </div>
 </section>
 <!-- collectionbannerthree end -->
-
 
 <!-- Product slider start-->
 <div class="title1 section-t-space">
@@ -67,8 +214,9 @@
     <div class="col-lg-6 offset-lg-3">
       <div class="product-para">
         <p class="text-center">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry, 
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry, Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s.
         </p>
       </div>
     </div>
@@ -78,15 +226,19 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <owl-carousel-o class="product-m no-arrow" [options]="ProductSliderConfig">
-          <ng-container *ngFor="let product of products | slice:0:16">
+        <owl-carousel-o
+          class="product-m no-arrow"
+          [options]="ProductSliderConfig"
+        >
+          <ng-container *ngFor="let product of products | slice: 0:16">
             <ng-template carouselSlide>
               <div class="product-box">
-                <app-product-box-one 
-                  [product]="product" 
+                <app-product-box-one
+                  [product]="product"
                   [currency]="productService?.Currency"
                   [thumbnail]="true"
-                  [cartModal]="true">
+                  [cartModal]="true"
+                >
                 </app-product-box-one>
               </div>
             </ng-template>
@@ -100,8 +252,10 @@
 
 <!-- Parallax banner start-->
 <section class="p-0">
-  <div class="full-banner parallax-banner1 parallax text-center p-left"
-    [ngStyle]="{'background-image': 'url(assets/images/parallax/1.jpg)'}">
+  <div
+    class="full-banner parallax-banner1 parallax text-center p-left"
+    [ngStyle]="{ 'background-image': 'url(assets/images/parallax/1.jpg)' }"
+  >
     <div class="container">
       <div class="row">
         <div class="col">
@@ -126,19 +280,35 @@
   <div class="container">
     <div class="row">
       <div class="col theme-tab">
-        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="tabs tab-title justify-content-center nav nav-pills" >
-          <li *ngFor="let collection of productCollections" [ngbNavItem]="collection">
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="active"
+          class="tabs tab-title justify-content-center nav nav-pills"
+        >
+          <li
+            *ngFor="let collection of productCollections"
+            [ngbNavItem]="collection"
+          >
             <a ngbNavLink>
-               {{ collection }}
+              {{ collection }}
             </a>
             <ng-template ngbNavContent>
               <div class="no-slider row">
-                  <ng-container *ngFor="let product of getCollectionProducts(collection) | slice:0:8">
-                      <div class="product-box">
-                          <app-product-box-one [product]="product" [currency]="productService?.Currency">
-                          </app-product-box-one>
-                      </div>
-                  </ng-container>
+                <ng-container
+                  *ngFor="
+                    let product of getCollectionProducts(collection)
+                      | slice: 0:8
+                  "
+                >
+                  <div class="product-box">
+                    <app-product-box-one
+                      [product]="product"
+                      [currency]="productService?.Currency"
+                    >
+                    </app-product-box-one>
+                  </div>
+                </ng-container>
               </div>
             </ng-template>
           </li>
@@ -192,4 +362,3 @@
 
 <app-newsletter></app-newsletter>
 <app-footer-one></app-footer-one>
-

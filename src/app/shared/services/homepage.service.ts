@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs';
 
 const AUTH_API = 'http://18.208.225.35/api/user/';
 
+// /api//user/view-all-category
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,16 @@ export class HomepageService {
   constructor(private http:HttpClient) { }
 
  getHomeSlider(){ 
-  return this.http.get(AUTH_API + 'main/view-all-banner', {
- });
+
+  return this.http.get(AUTH_API + 'main/view-all-banner', {});
 
  }
+
+ getCategories() {
+
+  return this.http.get(AUTH_API + 'main/view-all-category', {});
+
+ }
+
 
 }
