@@ -41,7 +41,7 @@ export class FashionOneComponent implements OnInit {
     this.responsiveOptions = [{
       breakpoint: '1024px',
       numVisible: 1,
-      numScroll: 3
+      numScroll: 4
   }];
   }
 
@@ -57,8 +57,8 @@ export class FashionOneComponent implements OnInit {
     pullDrag: true,
 
     navSpeed: 6000,
-    autoHeight: false,
-    autoWidth: false,
+    autoHeight: true,
+    autoWidth: true,
     responsive: {
       0: {
         items:1,
