@@ -12,11 +12,13 @@ import { SizeModalComponent } from "../../../shared/components/modal/size-modal/
 })
 export class ThreeColumnComponent implements OnInit {
 
-  public product: Product = {};
+  public product: any;
+  public products=[]
   public counter: number = 1;
   public activeSlide: any = 0;
   public selectedSize: any;
   public active = 1;
+  public id: string;
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -25,8 +27,34 @@ export class ThreeColumnComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router,
     public productService: ProductService) {
-    this.route.data.subscribe(response => this.product = response.data);
-  }
+    // this.route.data.subscribe(response =>
+    //   console.log("responsesinglr",response)
+      
+    //   //  this.product = response.data
+    //   );
+    this.route.queryParams.subscribe(params => {
+      console.log("paramssingle",params);
+      this.id = params.id ? params.id : null;
+      console.log("category",this.id);
+        // Category Filter
+        this.productService.getProducts.subscribe(response => {  
+          console.log("responseAll",response);    
+          // Category Filter
+          this.products=response
+          if(params.category)
+            this.products = this.products.filter(item => item.id == this.id);
+            console.log("this.category",this.id);
+            console.log("this.products",this.products);
+          // Price Filter
+          // this.products = this.products.filter(item => item.price >= this.minPrice && item.price <= this.maxPrice) 
+          // Paginate Products
+          // this.paginate = this.productService.getPager(this.products.length, +this.pageNo);     // get paginate object from service
+          // this.products = this.products.slice(this.paginate.startIndex, this.paginate.endIndex + 1); // get current page of items
+        })
+        
+      })
+    }
+
 
   ngOnInit(): void {
   }

@@ -17,6 +17,7 @@ export class BundleProductComponent implements OnInit {
   public activeSlide: any = 0;
   public selectedSize: any;
   public active = 1;
+  
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 

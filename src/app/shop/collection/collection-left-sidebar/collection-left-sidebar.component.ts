@@ -39,13 +39,12 @@ export class CollectionLeftSidebarComponent implements OnInit {
         this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
         this.tags = [...this.brands, ...this.colors, ...this.size]; // All Tags Array
         this.category = params.category ? params.category : null;
-        console.log("category",this.category);
         this.sortBy = params.sortBy ? params.sortBy : 'ascending';
         this.pageNo = params.page ? params.page : this.pageNo;
           // Get Filtered Products..
         this.productService.filterProducts(this.tags).subscribe(response => {  
-          console.log("response",response);    
-          // Sorting Filterbbbbbhh
+          console.log("responsefilter",response);    
+          // Sorting Filter
           this.products = this.productService.sortProducts(response, this.sortBy);
           // Category Filter
           if(params.category)
