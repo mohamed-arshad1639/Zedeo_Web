@@ -1,27 +1,91 @@
 <app-breadcrumb [title]="product?.title" [breadcrumb]="'Product'"></app-breadcrumb>
-<!-- section start -->
+<!-- category: "Shirts"
+description: "aaa"
+feature: Array(1)
+0: 
+{item: 'Cloth Type', value: 'cotton'}
+length: 1
+[[Prototype]]
+: 
+Array(0)
+hidden
+: 
+false
+id
+: 
+100
+productName
+: 
+"Casual shirt for men"
+stockManagement
+: 
+true
+subCategory
+: 
+"Allen Solly"
+variants
+: 
+Array(4)
+0
+: 
+{Name: 'Gary M', variantValues: Array(2), image: Array(2), offer: 4, price: 37, …}
+1
+: 
+{Name: 'Gary S', variantValues: Array(2), image: Array(2), offer: 76, price: 88, …}
+2
+: 
+{Name: 'White M', variantValues: Array(2), image: Array(2), offer: 6, price: 67, …}
+3
+: 
+{Name: 'White S', variantValues: Array(2), image: Array(2), offer: 67, price: 7, …}
+length
+: 
+4
+[[Prototype]]
+: 
+Array(0)
+variantsModel
+: 
+Array(2)
+0
+: 
+"Color"
+1
+: 
+"Size"
+length
+: 
+2
+[[Prototype]]
+: 
+Array(0)
+_id
+: 
+"63e7c6b8a4993f07d3bc105d" -->
+
+
 <section class="section-b-space">
     <div class="collection-wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
                     <owl-carousel-o [options]="ProductDetailsMainSliderConfig" #owlCar class="product-slick">
-                        <ng-container *ngFor="let image of product.images; index as i">
-                            <ng-template carouselSlide [id]="i">
+                        <ng-container *ngFor="let  varient of product.variants ;index as i; ">
+                            <ng-template carouselSlide [id]="i"> 
                                 <div>
-                                    <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="image.src" [alt]="image.alt" class="img-fluid">
+                                    <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="varient.image[0].url" [alt]="varient.image.alt" class="img-fluid">
                                 </div>
                             </ng-template>
                         </ng-container>
                     </owl-carousel-o>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12"> 
                             <div class="slider-nav">
                                 <owl-carousel-o [options]="ProductDetailsThumbConfig" class="product-slick">
-                                    <ng-container *ngFor="let image of product.images; index as i">
+                                    <ng-container *ngFor="let  varient of product.variants ;index as i">
                                         <ng-template carouselSlide [id]="i">
                                             <div class="owl-thumb" [class.active]="i == activeSlide">
-                                                <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="image.src" [alt]="image.alt" class="img-fluid" (click)="owlCar.to(activeSlide = i.toString())">
+                                                <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="varient.image[0].url" [alt]="varient.image.alt" class="img-fluid" (click)="owlCar.to(activeSlide = i.toString())">
                                             </div>
                                         </ng-template>
                                     </ng-container>
@@ -32,7 +96,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="product-right product-description-box">
-                        <h2>{{ product.title | titlecase }}</h2>
+                        <h2>{{ product.productName | titlecase }}</h2>
                         <div class="border-product">
                             <h6 class="product-title">product details</h6>
                             <p>{{ product.description.substring(0, 200)+'...' }}</p>
@@ -58,7 +122,7 @@
                                         <td *ngIf="counter > product.stock">Out of Stock</td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> 
                         </div>
                         <div class="border-product">
                             <h6 class="product-title">share it</h6>

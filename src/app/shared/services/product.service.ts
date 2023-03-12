@@ -44,9 +44,18 @@ export class ProductService {
 
   // Get Products By Slug
   public getProductBySlug(slug: string): Observable<Product> {
+    debugger
     return this.products.pipe(map(items => { 
+      console.log("itemspipe",items);
+      
       return items.find((item: any) => { 
-        return item.title.replace(' ', '-') === slug; 
+         console.log("itemfind",item);
+         debugger
+        console.log("slug",slug);
+        debugger
+        console.log(" item.title.replace", item._id);
+        
+        return item._id.replace(' ', '-') === slug; 
       }); 
     }));
   }

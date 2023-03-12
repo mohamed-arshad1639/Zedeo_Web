@@ -17,6 +17,7 @@ export class ThreeColumnComponent implements OnInit {
   public activeSlide: any = 0;
   public selectedSize: any;
   public active = 1;
+ public i=0;
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 

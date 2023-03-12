@@ -16,6 +16,7 @@ export interface Product {
     tags?: any[];
     variants?: Variants[];
     images?: Images[];
+    productName?: string;
 }
 
 export interface Variants {
