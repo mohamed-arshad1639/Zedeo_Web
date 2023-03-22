@@ -7431,9 +7431,9 @@ ngx-loading-bar {
         margin-bottom: 10px;
         ul {
             li {
-                height: 35px;
-                width: 35px;
-                border-radius: 50%;
+                height: 60px;
+                width: 40px;
+                border-radius: 5%;
                 margin-right: 10px;
                 cursor: pointer;
                 border: 1px solid $grey-about;
