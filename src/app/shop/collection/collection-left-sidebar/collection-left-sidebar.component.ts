@@ -31,7 +31,13 @@ export class CollectionLeftSidebarComponent implements OnInit {
     private viewScroller: ViewportScroller, public productService: ProductService) {   
       // Get Query params..
       this.route.queryParams.subscribe(params => {
+
+        debugger
+
         console.log("params",params);
+        debugger
+        console.log(" public tags: any[] = [];", this.tags);
+        
         this.brands = params.brand ? params.brand.split(",") : [];
         this.colors = params.color ? params.color.split(",") : [];
         this.size  = params.size ? params.size.split(",")  : [];
@@ -44,11 +50,15 @@ export class CollectionLeftSidebarComponent implements OnInit {
         this.pageNo = params.page ? params.page : this.pageNo;
           // Get Filtered Products..
         this.productService.filterProducts(this.tags).subscribe(response => {  
-          console.log("response",response);    
+          debugger
+          console.log("responsefilterrrrrrrrrrrrrr",response);    
           // Sorting Filterbbbbbhh
+          console.log("this.sortBy",this.sortBy);
+          debugger
           this.products = this.productService.sortProducts(response, this.sortBy);
           // Category Filter
           if(params.category)
+            // this.productService.CategorywiseProduct(params.category)
             this.products = this.products.filter(item => item.category == this.category);
             console.log("this.category",this.category);
             console.log("this.products",this.products);
