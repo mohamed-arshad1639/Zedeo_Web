@@ -21,6 +21,8 @@ export class ThreeColumnComponent implements OnInit {
   images=[]
   varrientimages:any=[]
   size:any
+  pcolor:any
+  name:any
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -44,20 +46,30 @@ export class ThreeColumnComponent implements OnInit {
     console.log("product in Single psge", this.product);
     this.varrients=this.product.variants
     console.log("varients123456789",this.varrients);
-    this.images=this.varrients[0].image
+    // this.images=this.varrients[0].image
     console.log("image12345678",this.images);
     this.size=this.varrients[0].variantValues[1].value
+    this.pcolor=this.varrients[0].variantValues[0].value
     this.selectSize(this.size)
-
-
-    
-    
+    this.changeValues(this.pcolor,this.size)
+    this.name=this.varrients[0].Name
   }
-  changecolour(color:any){
+  changeValues(color?:any,size?:any){
 
+    debugger
+
+
+    this.selectedSize = size;
+    this.size=size
+    this.pcolor=color
     console.log("color",color);
-    
+    console.log("color",this.size);
+    let ab=this.varrients.find(variant => variant.variantValues[0].value === this.pcolor && variant.variantValues[1].value === this.size);
+    console.log("ab",ab);
+    this.images=ab.image
+    this.name=ab.Name
 
+    console.log(" this.images", this.images);
   }
 
   // Get Product Color
@@ -87,7 +99,7 @@ export class ThreeColumnComponent implements OnInit {
   }
 
   selectSize(size) {
-    this.selectedSize = size;
+    
   }
 
   // Increament

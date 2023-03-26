@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="product-right product-description-box">
-                        <h2>{{ product. productName | titlecase }}</h2>
+                        <h2>{{ product. productName | titlecase }},{{name}}</h2>
                         <div class="border-product">
                             <h6 class="product-title">product details</h6>
                             <p>{{ product.description.substring(0, 300)+'...' }}</p>
@@ -111,7 +111,7 @@
                             {{ (product?.price | discount:product) * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}
                         </h3>
                         <ul class="color-variant" *ngIf="Color(product?.variants).length">
-                            <li [class]="color" *ngFor="let color of Color(product?.variants); index as i" [ngStyle]="{'background-color': color}" (click)="changecolour(color)">
+                            <li [class]="color" *ngFor="let color of Color(product?.variants); index as i" [ngStyle]="{'background-color': color}" (click)="changeValues(color,size)">
                             </li>
                         </ul>
                         <div class="product-description border-product">
@@ -124,7 +124,7 @@
                             <div class="size-box" *ngIf="Size(product.variants).length">
                                 <ul>
                                     <li [class.active]="selectedSize == size" *ngFor="let size of Size(product.variants)">
-                                        <a href="javascript:void(0)" (click)="selectSize(size)">{{ size  }}</a>
+                                        <a href="javascript:void(0)" (click)="changeValues(pcolor,size)">{{ size }}</a>
                                     </li>
                                 </ul>
                             </div>
