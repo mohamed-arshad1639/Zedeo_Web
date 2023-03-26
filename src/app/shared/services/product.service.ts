@@ -5,7 +5,10 @@ import { map, startWith, delay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 
-const AUTH_API = 'http://18.208.225.35/';
+// const AUTH_API = 'http://18.208.225.35/';
+const AUTH_API ='http://api.zedeoapp.com/';
+// http://api.zedeoapp.com/api/user/login
+// http://18.208.225.35/api/user/login
 
 const state = {
   products: JSON.parse(localStorage['products'] || '[]'),
