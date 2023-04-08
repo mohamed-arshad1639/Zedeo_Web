@@ -76,6 +76,9 @@ export class FashionOneComponent implements OnInit {
 
  
   getBannerData(){
+
+    debugger
+
      this.homePageService.getHomeSlider().subscribe({
       next: (data) => {
         this.sliders=data
@@ -91,6 +94,9 @@ export class FashionOneComponent implements OnInit {
   }
 
   getCategoryData(){
+
+    debugger
+    
     this.homePageService.getCategories().subscribe({
       next: (data) => {
         this.categories=data

@@ -22,7 +22,7 @@ const state = {
 })
 export class ProductService {
 
-  public Currency = { name: 'Dollar', currency: 'USD', price: 1 } // Default Currency
+  public Currency = { name: 'Indian Rupee', currency: 'INR', price: 1 } // Default Currency 'INR':'symbol-narrow':'4.2-2'
   public OpenCart: boolean = false;
   public Products
   constructor(private http: HttpClient,

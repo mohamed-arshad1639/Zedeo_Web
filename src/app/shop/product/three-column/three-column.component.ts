@@ -23,6 +23,10 @@ export class ThreeColumnComponent implements OnInit {
   size:any
   pcolor:any
   name:any
+  offerPercentage:any
+  offerPrize:any
+  prize:any
+  args={}
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -53,12 +57,10 @@ export class ThreeColumnComponent implements OnInit {
     this.selectSize(this.size)
     this.changeValues(this.pcolor,this.size)
     this.name=this.varrients[0].Name
+    this.offerPercentage='5'
   }
   changeValues(color?:any,size?:any){
-
     debugger
-
-
     this.selectedSize = size;
     this.size=size
     this.pcolor=color
@@ -68,7 +70,12 @@ export class ThreeColumnComponent implements OnInit {
     console.log("ab",ab);
     this.images=ab.image
     this.name=ab.Name
-
+    this.offerPrize=ab.offer
+    this.prize=ab.price
+    this.args={
+      offer:this.offerPrize,
+      price:this.prize
+    }
     console.log(" this.images", this.images);
   }
 
@@ -100,7 +107,7 @@ export class ThreeColumnComponent implements OnInit {
 
   selectSize(size) {
     
-  }
+   }
 
   // Increament
   increment() {
