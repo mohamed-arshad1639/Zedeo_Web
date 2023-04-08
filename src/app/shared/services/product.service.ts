@@ -40,11 +40,11 @@ export class ProductService {
     return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
   }
 
-  // public CategorywiseProduct(category:any):Observable<Product[]>{
-  //   this.Products = this.http.get<Product[]>(AUTH_API+`/api/user/main/veiw-category-products/${category}`).pipe(map(data => data));
-  //   this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
-  //   return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
-  // }
+  public CategorywiseProduct(category:any):Observable<Product[]>{
+    this.Products = this.http.get<Product[]>(AUTH_API+`/api/user/main/veiw-category-products/${category}`).pipe(map(data => data));
+    this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
+    return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
+  }
 
   // Get Products
   public get getProducts(): Observable<Product[]> {
