@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductSlider } from '../../../shared/data/slider';
+import { ProductSlider,CategorySlider } from '../../../shared/data/slider';
 import { Product } from '../../../shared/classes/product';
 import { ProductService } from '../../../shared/services/product.service';
+import { HomepageService } from 'src/app/shared/services/homepage.service';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+
 
 @Component({
   selector: 'app-fashion-one',
@@ -13,31 +16,105 @@ export class FashionOneComponent implements OnInit {
   public products: Product[] = [];
   public productCollections: any[] = [];
   public active;
+  sliders:any
+  categories:any
+  images:any
+  responsiveOptions;
 
-  constructor(public productService: ProductService) {
-    this.productService.getProducts.subscribe(response => {
-      this.products = response.filter(item => item.type == 'fashion');
-      // Get Product Collection
-      this.products.filter((item) => {
-        item.collection.filter((collection) => {
-          const index = this.productCollections.indexOf(collection);
-          if (index === -1) this.productCollections.push(collection);
-        })
-      })
-    });
+  constructor(public productService: ProductService ,private homePageService:HomepageService) {
+    // this.productService.getProducts.subscribe(response => {
+    //   debugger
+    //   // Get Product Collection
+    //   this.products.filter((item) => {
+    //     item.collection.filter((collection) => {
+    //       const index = this.productCollections.indexOf(collection);
+    //       if (index === -1) this.productCollections.push(collection);
+    //     })
+    //   })
+    // });
+
+    //get banner data
+    this.getBannerData()
+    //get categoryData
+    this.getCategoryData()
+
+    this.responsiveOptions = [{
+      breakpoint: '1024px',
+      numVisible: 1,
+      numScroll: 4
+  }];
   }
 
   public ProductSliderConfig: any = ProductSlider;
+  public CategorySliderConfig:any  = CategorySlider;
+  customOptions: OwlOptions = {
+    loop: true,
+    autoplay: true,
+    center: true,
+    dots: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
 
-  public sliders = [{
-    title: 'welcome to fashion',
-    subTitle: 'Men fashion',
-    image: 'assets/images/slider/1.jpg'
-  }, {
-    title: 'welcome to fashion',
-    subTitle: 'Women fashion',
-    image: 'assets/images/slider/2.jpg'
-  }]
+    navSpeed: 6000,
+    autoHeight: true,
+    autoWidth: true,
+    responsive: {
+      0: {
+        items:1,
+      },
+      600: {
+        items:3 ,
+      },
+      1000: {
+        items: 6,
+      },
+    },
+  };
+
+ 
+
+ 
+  getBannerData(){
+
+    debugger
+
+     this.homePageService.getHomeSlider().subscribe({
+      next: (data) => {
+        this.sliders=data
+        console.log("sliderss sucecss",data);
+        console.log("sliderss",this.sliders);
+      },
+      error: (err) => {
+        console.log("sliderss err data", err);
+        // this.errorMessage = err.error;
+        // this.toastr.error("", this.errorMessage);
+      },
+    });     
+  }
+
+  getCategoryData(){
+
+    debugger
+    
+    this.homePageService.getCategories().subscribe({
+      next: (data) => {
+        this.categories=data
+        console.log("categories",this.categories);
+        
+        console.log("sliderss sucecss",data);
+        console.log("sliderss",this.sliders);
+      },
+      error: (err) => {
+        console.log("sliderss err data", err);
+        // this.errorMessage = err.error;
+        // this.toastr.error("", this.errorMessage);
+      },
+    });     
+
+    
+
+  }
 
   // Collection banner
   public collections = [{
