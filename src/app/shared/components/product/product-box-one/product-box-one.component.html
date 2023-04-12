@@ -40,13 +40,13 @@
         <img 
           [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'" 
           [lazyLoad]="ImageSrc ? ImageSrc : this.product.variants[0].image[0].url" 
-          class="img-fluid lazy-loading" 
+          class="img-fluid1 lazy-loading" 
           alt="{{ this.product.variants[0].image[0].url }}" />
        </a> 
     </div>
     <div class="back" *ngIf="onHowerChangeImage">
    <a [routerLink]="['/shop/product/three/column/', product._id.replace(' ', '-')]"> -->
-        <img [src]="ImageSrc ? ImageSrc :this.product.variants[0].image[0].url" class="img-fluid lazy-loading" alt="{{ this.product.variants[0].image[0].url }}">
+        <img [src]="ImageSrc ? ImageSrc :this.product.variants[0].image[0].url" class="img-fluid1 lazy-loading" alt="{{ this.product.variants[0].image[0].url }}">
    </a> 
     </div>
     <ul class="product-thumb-list" *ngIf="thumbnail">

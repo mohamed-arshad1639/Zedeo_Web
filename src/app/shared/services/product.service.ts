@@ -41,7 +41,7 @@ export class ProductService {
   }
 
   public CategorywiseProduct(category:any):Observable<Product[]>{
-    this.Products = this.http.get<Product[]>(AUTH_API+`/api/user/main/veiw-category-products/${category}`).pipe(map(data => data));
+    this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-category-products/${category}`).pipe(map(data => data));
     this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
   }
@@ -52,8 +52,10 @@ export class ProductService {
   }
 
   // Get Products By Slug
-  public getProductBySlug(slug: string): Observable<Product> {
+  public getProductBySlug(slug: string): Observable<Product> { 
     debugger
+    this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-single-product/${slug}`).pipe(map(data => data));
+    this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.products.pipe(map(items => { 
       console.log("itemspipe",items);
       

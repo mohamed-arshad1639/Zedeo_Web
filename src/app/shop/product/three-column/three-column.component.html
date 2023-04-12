@@ -89,19 +89,23 @@
                                 </li>
                             </ul>
                             <div class="product-description border-product">
-                                <h6 class="product-title size-text" *ngIf="Size(product.variants).length">
-                                    select size
-                                    <span>
-                                  <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a>
-                                </span>
-                                </h6>
-                                <div class="size-box" *ngIf="Size(product.variants).length">
-                                    <ul>
-                                        <li [class.active]="selectedSize == size" *ngFor="let size of Size(product.variants)">
-                                            <a href="javascript:void(0)" (click)="changeValues(pcolor,size)">{{ size }}</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <div *ngFor="let item of varientmodel;let i=index" >
+                                    
+                                    <h6 class="product-title size-text" *ngIf="Size(product.variants,i).length">
+                                     Select {{item.name}}
+                                     <span>
+                                      <!-- <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a> -->
+                                    </span>
+                                    </h6>
+                                    <div class="size-box" *ngIf="Size(product.variants,i).length">
+                                        <ul>
+                                            <li [class.active]="selectedSize == size" *ngFor="let size of Size(product.variants,i)">
+                                                <a href="javascript:void(0)" (click)="changeValues(pcolor,size)">{{ size }}</a>
+                                            </li>
+                                        </ul>
+                                    </div> 
+                              </div>
+                               
                                 <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
                                 <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5>
                                 <h6 class="product-title">quantity</h6>

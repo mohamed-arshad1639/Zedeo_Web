@@ -27,6 +27,7 @@ export class ThreeColumnComponent implements OnInit {
   offerPrize:any
   prize:any
   args={}
+  varientmodel=[]
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -47,8 +48,14 @@ export class ThreeColumnComponent implements OnInit {
 
   ngOnInit(): void {
 
+    debugger
+
     console.log("product in Single psge", this.product);
     this.varrients=this.product.variants
+    // this.varientmodel=this.varrients[0].variantValues
+    this.varientmodel=this.varrients[0].variantValues
+    // .filter(data=>data.name!=="Color")
+    console.log("varientmodel",this.varientmodel);
     console.log("varients123456789",this.varrients);
     // this.images=this.varrients[0].image
     console.log("image12345678",this.images);
@@ -95,11 +102,12 @@ export class ThreeColumnComponent implements OnInit {
   }
 
   // Get Product Size
-  Size(variants) {
+  Size(variants,index:any) {
+    debugger 
     const uniqSize = []
-    for (let i = 0; i < Object.keys(variants).length; i++) {
-      if (uniqSize.indexOf(variants[i].variantValues[1].value) === -1 && variants[i].variantValues[1].value) {
-        uniqSize.push(variants[i].variantValues[1].value)
+    for (let i = 0; i < Object.keys(variants).length && index!=0; i++) {
+      if (uniqSize.indexOf(variants[i].variantValues[index].value) === -1 && variants[i].variantValues[index].value) {
+        uniqSize.push(variants[i].variantValues[index].value)
       }
     }
     return uniqSize

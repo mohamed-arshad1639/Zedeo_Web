@@ -48,6 +48,13 @@ export class CollectionLeftSidebarComponent implements OnInit {
         console.log("category",this.category);
         this.sortBy = params.sortBy ? params.sortBy : 'ascending';
         this.pageNo = params.page ? params.page : this.pageNo;
+         // category
+         if(params.category){
+          this.productService.CategorywiseProduct(params.category).subscribe(response => {
+            this.products=response
+          })
+         }
+
           // Get Filtered Products..
         this.productService.filterProducts(this.tags).subscribe(response => {  
           debugger
@@ -58,7 +65,8 @@ export class CollectionLeftSidebarComponent implements OnInit {
           this.products = this.productService.sortProducts(response, this.sortBy);
           // Category Filter
           if(params.category)
-            this.productService.CategorywiseProduct(params.category)
+          debugger
+           
             this.products = this.products.filter(item => item.category == this.category);
             console.log("this.category",this.category);
             console.log("this.products",this.products);
