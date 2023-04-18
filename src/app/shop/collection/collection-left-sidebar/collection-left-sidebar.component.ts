@@ -49,11 +49,11 @@ export class CollectionLeftSidebarComponent implements OnInit {
         this.sortBy = params.sortBy ? params.sortBy : 'ascending';
         this.pageNo = params.page ? params.page : this.pageNo;
          // category
-         if(params.category){
-          this.productService.CategorywiseProduct(params.category).subscribe(response => {
-            this.products=response
-          })
-         }
+        //  if(params.category){
+        //   this.productService.CategorywiseProduct(params.category).subscribe(response => {
+        //     this.products=response
+        //   })
+        //  }
 
           // Get Filtered Products..
         this.productService.filterProducts(this.tags).subscribe(response => {  
@@ -66,10 +66,9 @@ export class CollectionLeftSidebarComponent implements OnInit {
           // Category Filter
           if(params.category)
           debugger
-           
             this.products = this.products.filter(item => item.category == this.category);
-            console.log("this.category",this.category);
-            console.log("this.products",this.products);
+            console.log("this.category_BYcollectionLefSidebar",this.category);
+            console.log("this.products_Category",this.products);
           // Price Filter
           // this.products = this.products.filter(item => item.price >= this.minPrice && item.price <= this.maxPrice) 
           // Paginate Products

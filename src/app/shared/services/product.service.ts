@@ -35,16 +35,16 @@ export class ProductService {
   // assets/data/products.json
   private get products(): Observable<Product[]> {
     this.Products = this.http.get(AUTH_API+'api/user/main/view-all-products').pipe(map(data => data));
-  console.log("this.Products",this.Products);
+  console.log("this.Products_ALL",this.Products);
     this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
   }
 
-  public CategorywiseProduct(category:any):Observable<Product[]>{
-    this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-category-products/${category}`).pipe(map(data => data));
-    this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
-    return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
-  }
+  // public CategorywiseProduct(category:any):Observable<Product[]>{
+  //   this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-category-products/${category}`).pipe(map(data => data));
+  //   this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
+  //   return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
+  // }
 
   // Get Products
   public get getProducts(): Observable<Product[]> {
@@ -54,8 +54,8 @@ export class ProductService {
   // Get Products By Slug
   public getProductBySlug(slug: string): Observable<Product> { 
     debugger
-    this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-single-product/${slug}`).pipe(map(data => data));
-    this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
+    // this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-single-product/${slug}`).pipe(map(data => data));
+    // this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.products.pipe(map(items => { 
       console.log("itemspipe",items);
       

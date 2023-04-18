@@ -15,7 +15,7 @@ export class ThreeColumnComponent implements OnInit {
   public product: Product = {};
   public counter: number = 1;
   public activeSlide: any = 0;
-  public selectedSize: any;
+  public defaultFilter: any;
   public active = 1;
   varrients=[]
   images=[]
@@ -28,6 +28,7 @@ export class ThreeColumnComponent implements OnInit {
   prize:any
   args={}
   varientmodel=[]
+  selectedSize:any
 
   @ViewChild("sizeChart") SizeChart: SizeModalComponent;
 
@@ -49,32 +50,39 @@ export class ThreeColumnComponent implements OnInit {
   ngOnInit(): void {
 
     debugger
-
-    console.log("product in Single psge", this.product);
     this.varrients=this.product.variants
-    // this.varientmodel=this.varrients[0].variantValues
-    this.varientmodel=this.varrients[0].variantValues
-    // .filter(data=>data.name!=="Color")
-    console.log("varientmodel",this.varientmodel);
-    console.log("varients123456789",this.varrients);
-    // this.images=this.varrients[0].image
-    console.log("image12345678",this.images);
-    this.size=this.varrients[0].variantValues[1].value
-    this.pcolor=this.varrients[0].variantValues[0].value
-    this.selectSize(this.size)
-    this.changeValues(this.pcolor,this.size)
     this.name=this.varrients[0].Name
     this.offerPercentage='5'
+    console.log("product in Single psge", this.product);
+    // this.varientmodel=this.varrients[0].variantValues
+    this.varientmodel=this.varrients[0].variantValues
+    console.log("varientmodel",this.varientmodel);
+    console.log("varients123456789",this.varrients);
+    this.images=this.varrients[0].image
+    console.log("image12345678",this.images);
+    // this.size=this.varrients[0].variantValues[1].value
+    // this.pcolor=this.varrients[0].variantValues[0].value
+    this.selectSize(this.size)
+    let defaultValues = this.product.variantsModel.map((variant) => {
+      let defaultValue =this.varrients[0].variantValues.find(
+        (value) => value.name === variant
+        
+      );
+      return defaultValue ? defaultValue.value : null;
+    });
+    this.changeValues(defaultValues)
+   
+    
   }
-  changeValues(color?:any,size?:any){
+  changeValues(values:any){
     debugger
-    this.selectedSize = size;
-    this.size=size
-    this.pcolor=color
-    console.log("color",color);
-    console.log("color",this.size);
-    let ab=this.varrients.find(variant => variant.variantValues[0].value === this.pcolor && variant.variantValues[1].value === this.size);
-    console.log("ab",ab);
+    console.log("size",values);
+    // let ab=this.varrients.find(variant => variant.variantValues[0].value === this.pcolor && variant.variantValues[1].value === this.size);
+   
+    let ab = this.varrients.find(variant => {
+      let valuesArr = variant.variantValues.map(v => v.value);
+      return valuesArr.every((val, i) => val === values[i]);
+    });
     this.images=ab.image
     this.name=ab.Name
     this.offerPrize=ab.offer
@@ -102,10 +110,10 @@ export class ThreeColumnComponent implements OnInit {
   }
 
   // Get Product Size
-  Size(variants,index:any) {
+  filterVarients(variants,index:any) {
     debugger 
     const uniqSize = []
-    for (let i = 0; i < Object.keys(variants).length && index!=0; i++) {
+    for (let i = 0; i < Object.keys(variants).length ; i++) {
       if (uniqSize.indexOf(variants[i].variantValues[index].value) === -1 && variants[i].variantValues[index].value) {
         uniqSize.push(variants[i].variantValues[index].value)
       }

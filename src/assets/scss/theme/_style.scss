@@ -7431,23 +7431,28 @@ ngx-loading-bar {
         margin-bottom: 10px;
         ul {
             li {
-                height: 60px;
-                width: 40px;
+                height: 40px;
+                width: auto;
                 border-radius: 5%;
                 margin-right: 10px;
                 cursor: pointer;
-                border: 1px solid $grey-about;
+                border: 2px solid #f7f7f7;
                 text-align: center;
+                padding: 8px;
+
+
                 a {
                     color: $dark-font;
-                    font-size: 18px;
+                    font-size: 17px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     height: 100%;
                 }
                 &.active {
-                    background-color: $grey-about;
+                    background-color: #f5e9e94f;
+                    border: 3px solid #6cc284;
+                    border-radius: 5px;
                 }
             }
         }
