@@ -130,7 +130,7 @@
                 *ngIf="filterVarients(product.variants, i).length">
                     <ul>
                       <li
-                      [class.active]="selectedSize == true"
+                        [class.active]="size == item.value || size== selectedSize"
                         *ngFor="let size of filterVarients(product.variants, i)"
                       >
                         <a

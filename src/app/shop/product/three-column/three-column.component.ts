@@ -54,45 +54,63 @@ export class ThreeColumnComponent implements OnInit {
     this.name=this.varrients[0].Name
     this.offerPercentage='5'
     console.log("product in Single psge", this.product);
-    // this.varientmodel=this.varrients[0].variantValues
     this.varientmodel=this.varrients[0].variantValues
-    console.log("varientmodel",this.varientmodel);
-    console.log("varients123456789",this.varrients);
     this.images=this.varrients[0].image
-    console.log("image12345678",this.images);
-    // this.size=this.varrients[0].variantValues[1].value
-    // this.pcolor=this.varrients[0].variantValues[0].value
     this.selectSize(this.size)
     let defaultValues = this.product.variantsModel.map((variant) => {
       let defaultValue =this.varrients[0].variantValues.find(
         (value) => value.name === variant
-        
       );
       return defaultValue ? defaultValue.value : null;
     });
-    this.changeValues(defaultValues)
+    // this.changeValues(defaultValues)
    
     
   }
   changeValues(values:any){
-    debugger
-    console.log("size",values);
-    // let ab=this.varrients.find(variant => variant.variantValues[0].value === this.pcolor && variant.variantValues[1].value === this.size);
-   
-    let ab = this.varrients.find(variant => {
-      let valuesArr = variant.variantValues.map(v => v.value);
-      return valuesArr.every((val, i) => val === values[i]);
-    });
-    this.images=ab.image
-    this.name=ab.Name
-    this.offerPrize=ab.offer
-    this.prize=ab.price
-    this.args={
+    console.log("values",values);
+    // this.selectedSize=values
+    console.log("varientModel",this.varientmodel);
+    const redVariants =  this.varrients.filter(variant =>
+      variant.variantValues.some(variantValue => variantValue.value === values)
+    );
+if(redVariants.length==1){
+  const data=redVariants
+  this.varientmodel=redVariants[0].variantValues
+  this.images=data[0].image
+  this.name=data[0].Name
+  this.offerPrize=data[0].offer
+  this.prize=data[0].price
+  this.args={
       offer:this.offerPrize,
       price:this.prize
     }
-    console.log(" this.images", this.images);
-  }
+}
+else{
+
+  const data =redVariants.filter((variant) =>
+  variant.variantValues.some((value) =>
+  this.varientmodel.some((model) =>
+      model.name === value.name && model.value === value.value
+    )
+  )
+);
+console.log("data",data);
+this.varientmodel=data[0].variantValues
+this.images=data[0].image
+this.name=data[0].Name
+this.offerPrize=data[0].offer
+this.prize=data[0].price
+this.args={
+      offer:this.offerPrize,
+      price:this.prize
+    }
+console.log(" this.images", this.images);
+
+}
+console.log("redVariants",redVariants);
+   
+}
 
   // Get Product Color
   Color(variants) {
