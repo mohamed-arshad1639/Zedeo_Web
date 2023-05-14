@@ -34,7 +34,6 @@ export class ThreeColumnComponent implements OnInit {
 
   public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
   public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
-
   constructor(private route: ActivatedRoute, private router: Router,
     public productService: ProductService) {
       debugger
