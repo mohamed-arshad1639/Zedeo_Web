@@ -23,12 +23,13 @@
                 <tbody *ngFor="let product of products">
                     <tr>
                         <td>
-                            <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">
-                                <img [src]="product.images[0].src" [alt]="product.images[0].alt">
+                            <a [routerLink]="['shop/product/three/column/', product._id]">
+                                <img [src]="product.variants[0].image[0].url" [alt]="product.variants[0].image[0].url">
                             </a>
                         </td>
                         <td>
-                            <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]">{{ product.title | titlecase }}</a>
+                            <!-- <a [routerLink]="['/shop/product/left/sidebar/', product._id.replace(' ', '-')]">{{ product.productName | titlecase }}</a> -->
+                            <a >{{ product.productName | titlecase }} - {{product.variants[0].Name}}</a>
                             <div class="mobile-cart-content row">
                                 <div class="col">
                                     <div class="qty-box">
@@ -39,7 +40,8 @@
                                 </div>
                                 <div class="col">
                                     <h2 class="td-color">
-                                        {{ (product.price | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
+                                        <!-- {{ (product.varriants[0].price  | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }} -->
+                                        {{product.varriants[0].price}}
                                     </h2>
                                 </div>
                                 <div class="col">
@@ -53,7 +55,7 @@
                         </td>
                         <td>
                             <h2>
-                                {{ (product.price | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
+                                <!-- {{ (product.varriants.price | discount:product) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }} -->
                             </h2>
                         </td>
                         <td>
@@ -80,7 +82,9 @@
                         </td>
                         <td>
                             <h2 class="td-color">
-                                {{ ((product.price | discount:product) * product.quantity) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }}
+
+                                {{ product.varriants[0].price | currency:productService?.Currency.currency:'symbol' }}
+                                <!-- {{ ((product.price | discount:product) * product.quantity) * productService?.Currency.price | currency:productService?.Currency.currency:'symbol' }} -->
                             </h2>
                         </td>
                     </tr>
@@ -109,3 +113,55 @@
     </div>
 </section>
 <!--section end-->
+
+<!-- {
+    "variantsID": 2,
+    "Name": "(16GB/512GB SSD/Win 11/Office 2021/2 Years Warranty/Alexa Built-in/3 Month Game Pass/Arctic Grey/1.65Kg), 82H802XXIN",
+    "variantValues": [
+      {
+        "name": "RAM",
+        "value": "16 GB"
+      }
+    ],
+    "image": [
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063926/Banner/n6wqplchm842xbsxkxo3.jpg",
+        "public_id": "Banner/n6wqplchm842xbsxkxo3"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063947/Banner/ikmiyjscg0gam3u2rqzq.jpg",
+        "public_id": "Banner/ikmiyjscg0gam3u2rqzq"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063948/Banner/vcckb3lgqmrlkk6cvd3r.jpg",
+        "public_id": "Banner/vcckb3lgqmrlkk6cvd3r"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063949/Banner/rdvn9phdkoyrpkjhzmfd.jpg",
+        "public_id": "Banner/rdvn9phdkoyrpkjhzmfd"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063949/Banner/yzofxelm4uwd3mzmrajj.jpg",
+        "public_id": "Banner/yzofxelm4uwd3mzmrajj"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063949/Banner/ifzuytu30a7aubenjlum.jpg",
+        "public_id": "Banner/ifzuytu30a7aubenjlum"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063949/Banner/ocyc5trvtqqoafc2rypi.jpg",
+        "public_id": "Banner/ocyc5trvtqqoafc2rypi"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063951/Banner/htrt0agvzlvg1uqtnxou.jpg",
+        "public_id": "Banner/htrt0agvzlvg1uqtnxou"
+      },
+      {
+        "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680063951/Banner/ptzudczp1clbhmdfuvag.jpg",
+        "public_id": "Banner/ptzudczp1clbhmdfuvag"
+      }
+    ],
+    "offer": 58000,
+    "price": 80000,
+    "stock": 2
+  } -->

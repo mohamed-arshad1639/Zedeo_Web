@@ -18,6 +18,8 @@ export interface Product {
     images?: Images[];
     productName?: string;
     variantsModel?:any[];
+    
+    // subCategory:String;
 }
 
 export interface Variants {
@@ -27,6 +29,9 @@ export interface Variants {
     size?: string;
     color?: string;
     image_id?: number;
+    image:any
+    stock:number
+
 }
 
 export interface Images {
