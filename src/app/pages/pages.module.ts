@@ -44,6 +44,7 @@ import { MasonryGridThreeComponent } from './portfolio/masonry-grid-three/masonr
 import { MasonryGridFourComponent } from './portfolio/masonry-grid-four/masonry-grid-four.component';
 import { MasonryFullWidthComponent } from './portfolio/masonry-full-width/masonry-full-width.component';
 import { OtpVerificationComponent } from './account/otp-verification/otp-verification.component';
+import { OtpLoginComponent } from './account/otp-login/otp-login.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { OtpVerificationComponent } from './account/otp-verification/otp-verific
     MasonryGridThreeComponent,
     MasonryGridFourComponent,
     MasonryFullWidthComponent,
-    OtpVerificationComponent
+    OtpVerificationComponent,
+    OtpLoginComponent
   ],
   imports: [
 

@@ -5,6 +5,11 @@ import { map, startWith, delay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 
+// const AUTH_API = 'http://18.208.225.35/';
+const AUTH_API ='http://api.zedeoapp.com/';
+// http://api.zedeoapp.com/api/user/login
+// http://18.208.225.35/api/user/login
+
 const state = {
   products: JSON.parse(localStorage['products'] || '[]'),
   wishlist: JSON.parse(localStorage['wishlistItems'] || '[]'),
@@ -17,25 +22,29 @@ const state = {
 })
 export class ProductService {
 
-  public Currency = { name: 'Dollar', currency: 'USD', price: 1 } // Default Currency
+  public Currency = { name: 'Indian Rupee', currency: 'INR', price: 1 } // Default Currency 'INR':'symbol-narrow':'4.2-2'
   public OpenCart: boolean = false;
   public Products
-
   constructor(private http: HttpClient,
     private toastrService: ToastrService) { }
-
   /*
     ---------------------------------------------
     ---------------  Product  -------------------
     ---------------------------------------------
   */
-
-  // Product
+  // assets/data/products.json
   private get products(): Observable<Product[]> {
-    this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
+    this.Products = this.http.get(AUTH_API+'api/user/main/view-all-products').pipe(map(data => data));
+  console.log("this.Products_ALL",this.Products);
     this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
   }
+
+  // public CategorywiseProduct(category:any):Observable<Product[]>{
+  //   this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-category-products/${category}`).pipe(map(data => data));
+  //   this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
+  //   return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
+  // }
 
   // Get Products
   public get getProducts(): Observable<Product[]> {
@@ -43,10 +52,21 @@ export class ProductService {
   }
 
   // Get Products By Slug
-  public getProductBySlug(slug: string): Observable<Product> {
+  public getProductBySlug(slug: string): Observable<Product> { 
+    debugger
+    // this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-single-product/${slug}`).pipe(map(data => data));
+    // this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.products.pipe(map(items => { 
+      console.log("itemspipe",items);
+      
       return items.find((item: any) => { 
-        return item.title.replace(' ', '-') === slug; 
+         console.log("itemfind",item);
+         debugger
+        console.log("slug",slug);
+        debugger
+        console.log(" item.title.replace", item._id);
+        
+        return item._id.replace(' ', '-') === slug; 
       }); 
     }));
   }

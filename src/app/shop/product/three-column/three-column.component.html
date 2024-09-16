@@ -1,27 +1,486 @@
-<app-breadcrumb [title]="product?.title" [breadcrumb]="'Product'"></app-breadcrumb>
+<app-breadcrumb
+  [title]="product?.title"
+  [breadcrumb]="'Product'"
+></app-breadcrumb>
 <!-- section start -->
 <section class="section-b-space">
+  <div class="collection-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <owl-carousel-o
+            [options]="ProductDetailsMainSliderConfig"
+            #owlCar
+            class="product-slick"
+          >
+            <ng-container *ngFor="let image of images; index as i">
+              <ng-template carouselSlide [id]="i">
+                <div>
+                  <img
+                    [defaultImage]="'assets/images/product/placeholder.jpg'"
+                    [lazyLoad]="image.url"
+                    [alt]="image.alt"
+                    class="img-fluid"
+                  />
+                </div>
+              </ng-template>
+            </ng-container>
+          </owl-carousel-o>
+          <div class="row">
+            <div class="col-12">
+              <div class="slider-nav">
+                <owl-carousel-o
+                  [options]="ProductDetailsThumbConfig"
+                  class="product-slick"
+                >
+                  <ng-container *ngFor="let image of images; index as i">
+                    <ng-template carouselSlide [id]="i">
+                      <div class="owl-thumb" [class.active]="i == activeSlide">
+                        <img
+                          [defaultImage]="
+                            'assets/images/product/placeholder.jpg'
+                          "
+                          [lazyLoad]="image.url"
+                          [alt]="image.alt"
+                          class="img-fluid"
+                          (click)="owlCar.to((activeSlide = i.toString()))"
+                        />
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </owl-carousel-o>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="product-right product-description-box">
+            <h2>{{ product.productName | titlecase }},{{ name }}</h2>
+            <div class="border-product">
+              <h6 class="product-title">product details</h6>
+              <p>{{ product.description }}</p>
+            </div>
+            <!-- <div class="single-product-tables border-product detail-section">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>Febric:</td>
+                                        <td>Chiffon</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Color:</td>
+                                        <td>Yellow</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Material:</td>
+                                        <td>Crepe printed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Avalibility:</td>
+                                        <td *ngIf="counter <= product.stock">In Stock</td>
+                                        <td *ngIf="counter > product.stock">Out of Stock</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> -->
+            <!-- <div class="border-product">
+                            <h6 class="product-title">share it</h6>
+                            <div class="product-icon">
+                                <ul class="product-social">
+                                    <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="https://plus.google.com/discover"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="https://twitter.com/"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a></li>
+                                </ul>
+                                <form class="d-inline-block">
+                                    <button class="wishlist-btn" (click)="addToWishlist(product)"><i class="fa fa-heart"></i><span class="title-font">Add To WishList</span></button>
+                                </form>
+                            </div>
+                        </div> -->
+
+            <div class="product-right product-form-box">
+              <h4>
+                <del *ngIf="offerPrize">{{
+                  offerPrize * productService.Currency?.price
+                    | currency : productService.Currency?.currency : "symbol"
+                }}</del>
+                <!-- <span>{{ product?.discount }}% off</span> -->
+                <span>{{ offerPercentage }}% off</span>
+              </h4>
+              <h3>
+                {{
+                  (prize | discount : args) * productService.Currency?.price
+                    | currency : productService.Currency?.currency : "symbol"
+                }}
+              </h3>
+              <!-- <ul class="color-variant" *ngIf="Color(product?.variants).length">
+                                <li [class]="color" *ngFor="let color of Color(product?.variants); index as i" [ngStyle]="{'background-color': color}" (click)="changeValues(color,size)">
+                                </li>
+                            </ul> -->
+              <div class="product-description border-product">
+                <div *ngFor="let item of varientmodel; let i = index">
+                  <h6 class="product-title size-text" *ngIf="filterVarients(product.variants, i).length">
+                    Select {{ item.name }}
+                <span>
+                      <!-- <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a> -->
+                </span>
+                  </h6>
+                  <div
+                    class="size-box"
+                *ngIf="filterVarients(product.variants, i).length">
+                    <ul>
+                      <li
+                        [class.active]="size == item.value || size== selectedSize"
+                        *ngFor="let size of filterVarients(product.variants, i)"
+                      >
+                        <a
+                          href="javascript:void(0)"
+                          (click)="changeValues(size)"
+                          >{{ size }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <h5 class="avalibility" *ngIf="counter <= product.stock">
+                  <span>In Stock</span>
+                </h5>
+                <h5 class="avalibility" *ngIf="counter > product.stock">
+                  <span>Out of Stock</span>
+                </h5>
+                <h6 class="product-title">quantity</h6>
+                <div class="qty-box">
+                  <div class="input-group">
+                    <span class="input-group-prepend">
+                      <button
+                        type="button"
+                        class="btn quantity-left-minus"
+                        data-type="minus"
+                        (click)="decrement()"
+                      >
+                        <i class="ti-angle-left"></i>
+                      </button>
+                    </span>
+                    <input
+                      type="text"
+                      name="quantity"
+                      class="form-control input-number"
+                      [value]="counter"
+                      disabled
+                    />
+                    <span class="input-group-prepend">
+                      <button
+                        type="button"
+                        class="btn quantity-right-plus"
+                        data-type="plus"
+                        (click)="increment()"
+                      >
+                        <i class="ti-angle-right"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="product-buttons">
+                <a
+                  href="javascrip:void(0)"
+                  class="btn btn-solid"
+                  [class.disabled]="counter > product.stock"
+                  (click)="addToCart(product)"
+                  >add to cart</a
+                >
+                <a
+                  href="javascrip:void(0)"
+                  class="btn btn-solid"
+                  [class.disabled]="counter > product.stock"
+                  (click)="buyNow(product)"
+                  >buy now</a
+                >
+              </div>
+            </div>
+            <div class="border-product rtl-right-text">
+              <app-countdown [date]="'Apr 21 2021'"></app-countdown>
+            </div>
+            <div class="border-product">
+              <h6 class="product-title">100% SECURE PAYMENT</h6>
+              <div class="payment-card-bottom">
+                <ul>
+                  <li>
+                    <a href="javascript:void(0)"
+                      ><img src="assets/images/icon/visa.png" alt=""
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)"
+                      ><img src="assets/images/icon/mastercard.png" alt=""
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)"
+                      ><img src="assets/images/icon/paypal.png" alt=""
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)"
+                      ><img
+                        src="assets/images/icon/american-express.png"
+                        alt=""
+                    /></a>
+                  </li>
+                  <li>
+                    <a href="javascript:void(0)"
+                      ><img src="assets/images/icon/discover.png" alt=""
+                    /></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <!-- <div class="product-right product-form-box">
+                        <h4>
+                            <del *ngIf="product?.discount">{{ product?.price * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}</del>
+                            <span>{{ product?.discount }}% off</span>
+                        </h4>
+                        <h3>
+                            {{ (product?.price | discount:product) * productService.Currency?.price | currency: productService.Currency?.currency:'symbol' }}
+                        </h3>
+                        <ul class="color-variant" *ngIf="Color(product?.variants).length">
+                            <li [class]="color" *ngFor="let color of Color(product?.variants); index as i" [ngStyle]="{'background-color': color}" (click)="changeValues(color,size)">
+                            </li>
+                        </ul>
+                        <div class="product-description border-product">
+                            <h6 class="product-title size-text" *ngIf="Size(product.variants).length">
+                                select size
+                                <span>
+                              <a href="javascrip:void(0)" (click)="SizeChart.openModal()">size chart</a>
+                            </span>
+                            </h6>
+                            <div class="size-box" *ngIf="Size(product.variants).length">
+                                <ul>
+                                    <li [class.active]="selectedSize == size" *ngFor="let size of Size(product.variants)">
+                                        <a href="javascript:void(0)" (click)="changeValues(pcolor,size)">{{ size }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h5 class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></h5>
+                            <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5>
+                            <h6 class="product-title">quantity</h6>
+                            <div class="qty-box">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                <button type="button" class="btn quantity-left-minus" data-type="minus" (click)="decrement()">
+                                    <i class="ti-angle-left"></i>
+                                </button>
+                            </span>
+                                    <input type="text" name="quantity" class="form-control input-number" [value]="counter" disabled/>
+                                    <span class="input-group-prepend">
+                                <button type="button" class="btn quantity-right-plus" data-type="plus" (click)="increment()">
+                                    <i class="ti-angle-right"></i>
+                                </button>
+                            </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-buttons">
+                            <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock" (click)="addToCart(product)">add to cart</a>
+                            <a href="javascrip:void(0)" class="btn btn-solid" [class.disabled]="counter > product.stock" (click)="buyNow(product)">buy now</a>
+                        </div>
+                    </div> -->
+        </div>
+      </div>
+      <section class="tab-product m-0">
+        <div class="row">
+          <div class="col-sm-12 col-lg-12">
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+              <li [ngbNavItem]="1">
+                <a ngbNavLink>Description</a>
+                <ng-template ngbNavContent>
+                  <p>{{ product.description }}</p>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="2">
+                <a ngbNavLink>Video</a>
+                <ng-template ngbNavContent>
+                  <div class="mt-3 text-center">
+                    <iframe
+                      width="560"
+                      height="315"
+                      src="https://www.youtube.com/embed/BUWzX78Ye_8"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
+                </ng-template>
+              </li>
+              <li [ngbNavItem]="3">
+                <a ngbNavLink>Write Review</a>
+                <ng-template ngbNavContent>
+                  <form class="theme-form">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="media rating-sec">
+                          <label>Rating</label>
+                          <div class="media-body ms-3">
+                            <div class="rating three-star">
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="name">Name</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="name"
+                          placeholder="Enter Your name"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-6">
+                        <label for="email">Email</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="email"
+                          placeholder="Email"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-12">
+                        <label for="review">Review Title</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="review"
+                          placeholder="Enter your Review Subjects"
+                          required
+                        />
+                      </div>
+                      <div class="col-md-12">
+                        <label for="review">Review Title</label>
+                        <textarea
+                          class="form-control"
+                          placeholder="Wrire Your Testimonial Here"
+                          id="exampleFormControlTextarea1"
+                          rows="6"
+                        ></textarea>
+                      </div>
+                      <div class="col-md-12">
+                        <button class="btn btn-solid" type="submit">
+                          Submit YOur Review
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+<app-size-modal #sizeChart [product]="product"></app-size-modal>
+
+<!-- Section ends -->
+
+<!-- <app-breadcrumb [title]="product?.title" [breadcrumb]="'Product'"></app-breadcrumb> -->
+<!-- category: "Shirts"
+description: "aaa"
+feature: Array(1)
+0: 
+{item: 'Cloth Type', value: 'cotton'}
+length: 1
+[[Prototype]]
+: 
+Array(0)
+hidden
+: 
+false
+id
+: 
+100
+productName
+: 
+"Casual shirt for men"
+stockManagement
+: 
+true
+subCategory
+: 
+"Allen Solly"
+variants
+: 
+Array(4)
+0
+: 
+{Name: 'Gary M', variantValues: Array(2), image: Array(2), offer: 4, price: 37, …}
+1
+: 
+{Name: 'Gary S', variantValues: Array(2), image: Array(2), offer: 76, price: 88, …}
+2
+: 
+{Name: 'White M', variantValues: Array(2), image: Array(2), offer: 6, price: 67, …}
+3
+: 
+{Name: 'White S', variantValues: Array(2), image: Array(2), offer: 67, price: 7, …}
+length
+: 
+4
+[[Prototype]]
+: 
+Array(0)
+variantsModel
+: 
+Array(2)
+0
+: 
+"Color"
+1
+: 
+"Size"
+length
+: 
+2
+[[Prototype]]
+: 
+Array(0)
+_id
+: 
+"63e7c6b8a4993f07d3bc105d" -->
+
+<!-- <section class="section-b-space">
     <div class="collection-wrapper">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
                     <owl-carousel-o [options]="ProductDetailsMainSliderConfig" #owlCar class="product-slick">
-                        <ng-container *ngFor="let image of product.images; index as i">
-                            <ng-template carouselSlide [id]="i">
+                        <ng-container *ngFor="let  varient of product.variants ;index as i; ">
+                            <ng-template carouselSlide [id]="i"> 
                                 <div>
-                                    <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="image.src" [alt]="image.alt" class="img-fluid">
+                                    <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="varient.image[0].url" [alt]="varient.image.alt" class="img-fluid">
                                 </div>
                             </ng-template>
                         </ng-container>
                     </owl-carousel-o>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12"> 
                             <div class="slider-nav">
                                 <owl-carousel-o [options]="ProductDetailsThumbConfig" class="product-slick">
-                                    <ng-container *ngFor="let image of product.images; index as i">
+                                    <ng-container *ngFor="let  varient of product.variants ;index as i">
                                         <ng-template carouselSlide [id]="i">
                                             <div class="owl-thumb" [class.active]="i == activeSlide">
-                                                <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="image.src" [alt]="image.alt" class="img-fluid" (click)="owlCar.to(activeSlide = i.toString())">
+                                                <img [defaultImage]="'assets/images/product/placeholder.jpg'" [lazyLoad]="varient.image[0].url" [alt]="varient.image.alt" class="img-fluid" (click)="owlCar.to(activeSlide = i.toString())">
                                             </div>
                                         </ng-template>
                                     </ng-container>
@@ -32,7 +491,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="product-right product-description-box">
-                        <h2>{{ product.title | titlecase }}</h2>
+                        <h2>{{ product.productName | titlecase }}</h2>
                         <div class="border-product">
                             <h6 class="product-title">product details</h6>
                             <p>{{ product.description.substring(0, 200)+'...' }}</p>
@@ -58,7 +517,7 @@
                                         <td *ngIf="counter > product.stock">Out of Stock</td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> 
                         </div>
                         <div class="border-product">
                             <h6 class="product-title">share it</h6>
@@ -222,5 +681,5 @@
         </div>
     </div>
 </section>
-<app-size-modal #sizeChart [product]="product"></app-size-modal>
+<app-size-modal #sizeChart [product]="product"></app-size-modal> -->
 <!-- Section ends -->

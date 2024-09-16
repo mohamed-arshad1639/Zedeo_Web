@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { QuickViewComponent } from "../../modal/quick-view/quick-view.component";
 import { CartModalComponent } from "../../modal/cart-modal/cart-modal.component";
-import { Product } from "../../../classes/product";
+// import { Product } from "../../../classes/product";
 import { ProductService } from "../../../services/product.service";
 
 @Component({
@@ -11,7 +11,7 @@ import { ProductService } from "../../../services/product.service";
 })
 export class ProductBoxOneComponent implements OnInit {
 
-  @Input() product: Product;
+  @Input() product;
   @Input() currency: any = this.productService.Currency; // Default Currency 
   @Input() thumbnail: boolean = false; // Default False 
   @Input() onHowerChangeImage: boolean = false; // Default False
@@ -20,16 +20,48 @@ export class ProductBoxOneComponent implements OnInit {
   
   @ViewChild("quickView") QuickView: QuickViewComponent;
   @ViewChild("cartModal") CartModal: CartModalComponent;
-
   public ImageSrc : string
-
   constructor(private productService: ProductService) { }
-
   ngOnInit(): void {
     if(this.loader) {
       setTimeout(() => { this.loader = false; }, 2000); // Skeleton Loader
+      console.log("productoneee",this.product);
+      console.log("image",this.product.variants[0].image[0].url);
+      
     }
   }
+
+
+  // {
+  //   "_id": "63a1f068c1eacf3d2700208f",
+  //   "category": "Fashion",
+  //   "subCategory": "Mens",
+  //   "feature": [
+  //     {
+  //       "item": "brand",
+  //       "value": "U.S.P"
+  //     }
+  //   ],
+  //   "variants": [
+  //     {
+  //       "Name": "yellow",
+  //       "color": "balck",
+  //       "size": "M",
+  //       "image": [
+  //         {
+  //           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1671557026/Banner/bgwfydlkbeejdposnjg0.jpg",
+  //           "public_id": "Banner/bgwfydlkbeejdposnjg0"
+  //         }
+  //       ]
+  //     }
+  //   ],
+  //   "variantsModel": [
+  //     "color",
+  //     "size"
+  //   ],
+  //   "id": 100
+  // }
+
 
   // Get Product Color
   Color(variants) {
@@ -41,7 +73,6 @@ export class ProductBoxOneComponent implements OnInit {
     }
     return uniqColor
   }
-
   // Change Variants
   ChangeVariants(color, product) {
     product.variants.map((item) => {
@@ -54,7 +85,6 @@ export class ProductBoxOneComponent implements OnInit {
       }
     })
   }
-
   // Change Variants Image
   ChangeVariantsImage(src) {
     this.ImageSrc = src;
