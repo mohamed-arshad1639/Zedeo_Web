@@ -5,6 +5,8 @@ import { map, startWith, delay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 
+const AUTH_API = 'http://18.208.225.35/';
+
 const state = {
   products: JSON.parse(localStorage['products'] || '[]'),
   wishlist: JSON.parse(localStorage['wishlistItems'] || '[]'),
@@ -20,19 +22,17 @@ export class ProductService {
   public Currency = { name: 'Dollar', currency: 'USD', price: 1 } // Default Currency
   public OpenCart: boolean = false;
   public Products
-
   constructor(private http: HttpClient,
     private toastrService: ToastrService) { }
-
   /*
     ---------------------------------------------
     ---------------  Product  -------------------
     ---------------------------------------------
   */
-
-  // Product
+  // assets/data/products.json
   private get products(): Observable<Product[]> {
-    this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
+    this.Products = this.http.get(AUTH_API+'api/user/main/view-all-products').pipe(map(data => data));
+  console.log("this.Products",this.Products);
     this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
   }

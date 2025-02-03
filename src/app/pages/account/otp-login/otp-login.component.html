@@ -8,25 +8,23 @@
                 <div class="theme-card">
                     <form [formGroup]="loginForm" (ngSubmit)="login()"   class="theme-form">
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" formControlName="email" name="email" class="form-control" id="email" placeholder="email" required="">
-                            <div style="color:red;" *ngIf="((this.loginForm.get('email')?.dirty)||this.loginForm.get('email')?.touched)&&(this.loginForm.get('email')?.errors)">Please Enter Valid Email</div>
-                            <label for="Password">&nbsp;</label>
-
+                            <label for="phone">phone</label>
+                            <input type="phone" formControlName="phone" name="phone" class="form-control" id="phone" placeholder="Enter Phone" required="">
+                            <div style="color:red;" *ngIf="((this.loginForm.get('phone')?.dirty)||this.loginForm.get('phone')?.touched)&&(this.loginForm.get('phone')?.errors)">Please Enter Valid Email</div>
+                            <label for="phone">&nbsp;</label>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="review">Password</label>
                             <input type="password" formControlName="password"  name="email" class="form-control" id="password" placeholder="Enter your password" required="">
                             <div style="color:red;" *ngIf="((this.loginForm.get('password')?.dirty)||this.loginForm.get('password')?.touched)&&(this.loginForm.get('password')?.errors)">Please Enter Valid Password</div>
                             <label for="Password">&nbsp;</label>
-
-                        </div>
+                        </div> -->
                         <div class="row">
                             <div class="col-lg-8">
-                                <button type="submit"  class="btn btn-solid" >Login</button>
+                                <button type="submit" class="btn btn-solid" >Login</button>
                             </div>
                             <div class="col-lg-4" style="padding:20px 0px 0px 1px ;">
-                                <a style="font-size:16px ;"  [routerLink]="['/pages/otpLogin']" > Login With Phone Number </a>
+                                <a style="font-size:16px ;"  [routerLink]="['/pages/login']" > Login With Email </a>
                             </div>
                         </div>
 
