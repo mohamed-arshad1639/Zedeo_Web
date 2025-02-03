@@ -22,16 +22,16 @@ export class FashionOneComponent implements OnInit {
   responsiveOptions;
 
   constructor(public productService: ProductService ,private homePageService:HomepageService) {
-    this.productService.getProducts.subscribe(response => {
-      this.products = response.filter(item => item.type == 'fashion');
-      // Get Product Collection
-      this.products.filter((item) => {
-        item.collection.filter((collection) => {
-          const index = this.productCollections.indexOf(collection);
-          if (index === -1) this.productCollections.push(collection);
-        })
-      })
-    });
+    // this.productService.getProducts.subscribe(response => {
+    //   debugger
+    //   // Get Product Collection
+    //   this.products.filter((item) => {
+    //     item.collection.filter((collection) => {
+    //       const index = this.productCollections.indexOf(collection);
+    //       if (index === -1) this.productCollections.push(collection);
+    //     })
+    //   })
+    // });
 
     //get banner data
     this.getBannerData()
@@ -76,6 +76,9 @@ export class FashionOneComponent implements OnInit {
 
  
   getBannerData(){
+
+    debugger
+
      this.homePageService.getHomeSlider().subscribe({
       next: (data) => {
         this.sliders=data
@@ -91,6 +94,9 @@ export class FashionOneComponent implements OnInit {
   }
 
   getCategoryData(){
+
+    debugger
+    
     this.homePageService.getCategories().subscribe({
       next: (data) => {
         this.categories=data

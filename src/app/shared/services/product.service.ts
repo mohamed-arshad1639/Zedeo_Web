@@ -5,7 +5,10 @@ import { map, startWith, delay } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 
-const AUTH_API = 'http://18.208.225.35/';
+// const AUTH_API = 'http://18.208.225.35/';
+const AUTH_API ='http://api.zedeoapp.com/';
+// http://api.zedeoapp.com/api/user/login
+// http://18.208.225.35/api/user/login
 
 const state = {
   products: JSON.parse(localStorage['products'] || '[]'),
@@ -19,7 +22,7 @@ const state = {
 })
 export class ProductService {
 
-  public Currency = { name: 'Dollar', currency: 'USD', price: 1 } // Default Currency
+  public Currency = { name: 'Indian Rupee', currency: 'INR', price: 1 } // Default Currency 'INR':'symbol-narrow':'4.2-2'
   public OpenCart: boolean = false;
   public Products
   constructor(private http: HttpClient,
@@ -32,10 +35,16 @@ export class ProductService {
   // assets/data/products.json
   private get products(): Observable<Product[]> {
     this.Products = this.http.get(AUTH_API+'api/user/main/view-all-products').pipe(map(data => data));
-  console.log("this.Products",this.Products);
+  console.log("this.Products_ALL",this.Products);
     this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
   }
+
+  // public CategorywiseProduct(category:any):Observable<Product[]>{
+  //   this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-category-products/${category}`).pipe(map(data => data));
+  //   this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
+  //   return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
+  // }
 
   // Get Products
   public get getProducts(): Observable<Product[]> {
@@ -43,10 +52,21 @@ export class ProductService {
   }
 
   // Get Products By Slug
-  public getProductBySlug(slug: string): Observable<Product> {
+  public getProductBySlug(slug: string): Observable<Product> { 
+    debugger
+    // this.Products = this.http.get<Product[]>(AUTH_API+`api/user/main/view-single-product/${slug}`).pipe(map(data => data));
+    // this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next) });
     return this.products.pipe(map(items => { 
+      console.log("itemspipe",items);
+      
       return items.find((item: any) => { 
-        return item.title.replace(' ', '-') === slug; 
+         console.log("itemfind",item);
+         debugger
+        console.log("slug",slug);
+        debugger
+        console.log(" item.title.replace", item._id);
+        
+        return item._id.replace(' ', '-') === slug; 
       }); 
     }));
   }
@@ -141,7 +161,10 @@ export class ProductService {
 
   // Add to Cart
   public addToCart(product): any {
-    const cartItem = state.cart.find(item => item.id === product.id);
+
+    debugger
+
+    const cartItem = state.cart.find(item => item._id === product._id && item.variants[0].variantsID === product.variants[0].variantsID);
     const qty = product.quantity ? product.quantity : 1;
     const items = cartItem ? cartItem : product;
     const stock = this.calculateStockCounts(items, qty);
@@ -163,9 +186,10 @@ export class ProductService {
   }
 
   // Update Cart Quantity
-  public updateCartQuantity(product: Product, quantity: number): Product | boolean {
+  public updateCartQuantity(product:any, quantity: number): Product | boolean {
+    debugger
     return state.cart.find((items, index) => {
-      if (items.id === product.id) {
+      if (items._id === product._id &&items.variants[0].variantsID === product.variants[0].variantsID) {
         const qty = state.cart[index].quantity + quantity
         const stock = this.calculateStockCounts(state.cart[index], quantity)
         if (qty !== 0 && stock) {
@@ -180,7 +204,7 @@ export class ProductService {
     // Calculate Stock Counts
   public calculateStockCounts(product, quantity) {
     const qty = product.quantity + quantity
-    const stock = product.stock
+    const stock = product.variants[0].stock
     if (stock < qty || stock == 0) {
       this.toastrService.error('You can not add more items than available. In stock '+ stock +' items.');
       return false
@@ -336,3 +360,415 @@ export class ProductService {
   }
 
 }
+
+
+
+// {
+//   "_id": "6423c1e143a6b2322085904d",
+//   "productName": "Apple iPhone 14",
+//   "category": "Phones",
+//   "subCategory": "iPhone",
+//   "description": "Brand: \tApple\nModel Name: \tiPhone 14\nNetwork Service Provider:\tUnlocked for All Carriers\nOperating System:\tiOS 16\nCellular Technology: \t5G\n\n15.40 cm (6.1-inch) Super Retina XDR display\nAdvanced camera system for better photos in any light\nCinematic mode now in 4K Dolby Vision up to 30 fps\nAction mode for smooth, steady, handheld videos\nVital safety technology — Crash Detection calls for help when you can’t",
+//   "feature": [
+//     {
+//       "item": "..",
+//       "value": ".."
+//     }
+//   ],
+//   "variants": [
+//     {
+//       "variantsID": 1,
+//       "Name": "(128 GB) - Yellow",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "128 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Yellow"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064620/Banner/laellowmh8jlxaa9wqcl.jpg",
+//           "public_id": "Banner/laellowmh8jlxaa9wqcl"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064632/Banner/ktmz3kprcaqabnb5h3kj.jpg",
+//           "public_id": "Banner/ktmz3kprcaqabnb5h3kj"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064633/Banner/thvhj69ab7umpsoqj14z.jpg",
+//           "public_id": "Banner/thvhj69ab7umpsoqj14z"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064635/Banner/csfslqbltqpfb0jcjqer.jpg",
+//           "public_id": "Banner/csfslqbltqpfb0jcjqer"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064636/Banner/shpjygdxkgpjijlvnisy.jpg",
+//           "public_id": "Banner/shpjygdxkgpjijlvnisy"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064641/Banner/ockwomllg2fclai5syki.jpg",
+//           "public_id": "Banner/ockwomllg2fclai5syki"
+//         }
+//       ],
+//       "offer": 72999,
+//       "price": 79999,
+//       "stock": 8
+//     },
+//     {
+//       "variantsID": 2,
+//       "Name": "(256 GB) - Yellow",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "256 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Yellow"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064620/Banner/laellowmh8jlxaa9wqcl.jpg",
+//           "public_id": "Banner/laellowmh8jlxaa9wqcl"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064632/Banner/ktmz3kprcaqabnb5h3kj.jpg",
+//           "public_id": "Banner/ktmz3kprcaqabnb5h3kj"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064633/Banner/thvhj69ab7umpsoqj14z.jpg",
+//           "public_id": "Banner/thvhj69ab7umpsoqj14z"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064635/Banner/csfslqbltqpfb0jcjqer.jpg",
+//           "public_id": "Banner/csfslqbltqpfb0jcjqer"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064636/Banner/shpjygdxkgpjijlvnisy.jpg",
+//           "public_id": "Banner/shpjygdxkgpjijlvnisy"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064641/Banner/ockwomllg2fclai5syki.jpg",
+//           "public_id": "Banner/ockwomllg2fclai5syki"
+//         }
+//       ],
+//       "offer": 82999,
+//       "price": 89999,
+//       "stock": 3
+//     },
+//     {
+//       "variantsID": 3,
+//       "Name": "(512 GB) - Yellow",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "512 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Yellow"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064620/Banner/laellowmh8jlxaa9wqcl.jpg",
+//           "public_id": "Banner/laellowmh8jlxaa9wqcl"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064632/Banner/ktmz3kprcaqabnb5h3kj.jpg",
+//           "public_id": "Banner/ktmz3kprcaqabnb5h3kj"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064633/Banner/thvhj69ab7umpsoqj14z.jpg",
+//           "public_id": "Banner/thvhj69ab7umpsoqj14z"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064635/Banner/csfslqbltqpfb0jcjqer.jpg",
+//           "public_id": "Banner/csfslqbltqpfb0jcjqer"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064636/Banner/shpjygdxkgpjijlvnisy.jpg",
+//           "public_id": "Banner/shpjygdxkgpjijlvnisy"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064641/Banner/ockwomllg2fclai5syki.jpg",
+//           "public_id": "Banner/ockwomllg2fclai5syki"
+//         }
+//       ],
+//       "offer": 92999,
+//       "price": 99999,
+//       "stock": 5
+//     },
+//     {
+//       "variantsID": 4,
+//       "Name": "(128 GB) - RED",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "128 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Red"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064793/Banner/bqncdly2gpo8xjjnws8i.jpg",
+//           "public_id": "Banner/bqncdly2gpo8xjjnws8i"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064805/Banner/tzcqg2psjg9xvsimviep.jpg",
+//           "public_id": "Banner/tzcqg2psjg9xvsimviep"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/taqqq4289lgchp0f7myi.jpg",
+//           "public_id": "Banner/taqqq4289lgchp0f7myi"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/ojwxwtanbciozhknrxkg.jpg",
+//           "public_id": "Banner/ojwxwtanbciozhknrxkg"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/strlbkcbkyskmpijdoka.jpg",
+//           "public_id": "Banner/strlbkcbkyskmpijdoka"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064812/Banner/idoagkcmdaheimhokdih.jpg",
+//           "public_id": "Banner/idoagkcmdaheimhokdih"
+//         }
+//       ],
+//       "offer": 71999,
+//       "price": 79999,
+//       "stock": 3
+//     },
+//     {
+//       "variantsID": 5,
+//       "Name": "(256 GB) - RED",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "256 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Red"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064793/Banner/bqncdly2gpo8xjjnws8i.jpg",
+//           "public_id": "Banner/bqncdly2gpo8xjjnws8i"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064805/Banner/tzcqg2psjg9xvsimviep.jpg",
+//           "public_id": "Banner/tzcqg2psjg9xvsimviep"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/taqqq4289lgchp0f7myi.jpg",
+//           "public_id": "Banner/taqqq4289lgchp0f7myi"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/ojwxwtanbciozhknrxkg.jpg",
+//           "public_id": "Banner/ojwxwtanbciozhknrxkg"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/strlbkcbkyskmpijdoka.jpg",
+//           "public_id": "Banner/strlbkcbkyskmpijdoka"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064812/Banner/idoagkcmdaheimhokdih.jpg",
+//           "public_id": "Banner/idoagkcmdaheimhokdih"
+//         }
+//       ],
+//       "offer": 81999,
+//       "price": 89999,
+//       "stock": 1
+//     },
+//     {
+//       "variantsID": 6,
+//       "Name": "(512 GB) - RED",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "512 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Red"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064793/Banner/bqncdly2gpo8xjjnws8i.jpg",
+//           "public_id": "Banner/bqncdly2gpo8xjjnws8i"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064805/Banner/tzcqg2psjg9xvsimviep.jpg",
+//           "public_id": "Banner/tzcqg2psjg9xvsimviep"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/taqqq4289lgchp0f7myi.jpg",
+//           "public_id": "Banner/taqqq4289lgchp0f7myi"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/ojwxwtanbciozhknrxkg.jpg",
+//           "public_id": "Banner/ojwxwtanbciozhknrxkg"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064807/Banner/strlbkcbkyskmpijdoka.jpg",
+//           "public_id": "Banner/strlbkcbkyskmpijdoka"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064812/Banner/idoagkcmdaheimhokdih.jpg",
+//           "public_id": "Banner/idoagkcmdaheimhokdih"
+//         }
+//       ],
+//       "offer": 91999,
+//       "price": 99999,
+//       "stock": 10
+//     },
+//     {
+//       "variantsID": 7,
+//       "Name": "(128 GB) - Purple",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "128 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Purple"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064928/Banner/wkp7u0yuj6rr5ejattuc.jpg",
+//           "public_id": "Banner/wkp7u0yuj6rr5ejattuc"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064935/Banner/gvo33vfbph25drwtoivn.jpg",
+//           "public_id": "Banner/gvo33vfbph25drwtoivn"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064936/Banner/bnv1pdxwwa9vujc21z9b.jpg",
+//           "public_id": "Banner/bnv1pdxwwa9vujc21z9b"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064936/Banner/chr3ir3crucavp1eptx1.jpg",
+//           "public_id": "Banner/chr3ir3crucavp1eptx1"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064937/Banner/sgevuxopnsb468qpzk8f.jpg",
+//           "public_id": "Banner/sgevuxopnsb468qpzk8f"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064941/Banner/rqkyxydcgrwo3eugnxzg.jpg",
+//           "public_id": "Banner/rqkyxydcgrwo3eugnxzg"
+//         }
+//       ],
+//       "offer": 81999,
+//       "price": 89999,
+//       "stock": 2
+//     },
+//     {
+//       "variantsID": 8,
+//       "Name": "(256 GB) - Purple",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "256 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Purple"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064928/Banner/wkp7u0yuj6rr5ejattuc.jpg",
+//           "public_id": "Banner/wkp7u0yuj6rr5ejattuc"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064935/Banner/gvo33vfbph25drwtoivn.jpg",
+//           "public_id": "Banner/gvo33vfbph25drwtoivn"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064936/Banner/bnv1pdxwwa9vujc21z9b.jpg",
+//           "public_id": "Banner/bnv1pdxwwa9vujc21z9b"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064936/Banner/chr3ir3crucavp1eptx1.jpg",
+//           "public_id": "Banner/chr3ir3crucavp1eptx1"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064937/Banner/sgevuxopnsb468qpzk8f.jpg",
+//           "public_id": "Banner/sgevuxopnsb468qpzk8f"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064941/Banner/rqkyxydcgrwo3eugnxzg.jpg",
+//           "public_id": "Banner/rqkyxydcgrwo3eugnxzg"
+//         }
+//       ],
+//       "offer": 91999,
+//       "price": 99999,
+//       "stock": 5
+//     },
+//     {
+//       "variantsID": 9,
+//       "Name": "(512 GB) - Purple",
+//       "variantValues": [
+//         {
+//           "name": "ROM",
+//           "value": "512 GB"
+//         },
+//         {
+//           "name": "Color",
+//           "value": "Purple"
+//         }
+//       ],
+//       "image": [
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064928/Banner/wkp7u0yuj6rr5ejattuc.jpg",
+//           "public_id": "Banner/wkp7u0yuj6rr5ejattuc"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064935/Banner/gvo33vfbph25drwtoivn.jpg",
+//           "public_id": "Banner/gvo33vfbph25drwtoivn"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064936/Banner/bnv1pdxwwa9vujc21z9b.jpg",
+//           "public_id": "Banner/bnv1pdxwwa9vujc21z9b"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064936/Banner/chr3ir3crucavp1eptx1.jpg",
+//           "public_id": "Banner/chr3ir3crucavp1eptx1"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064937/Banner/sgevuxopnsb468qpzk8f.jpg",
+//           "public_id": "Banner/sgevuxopnsb468qpzk8f"
+//         },
+//         {
+//           "url": "http://res.cloudinary.com/dfx1wpxqz/image/upload/v1680064941/Banner/rqkyxydcgrwo3eugnxzg.jpg",
+//           "public_id": "Banner/rqkyxydcgrwo3eugnxzg"
+//         }
+//       ],
+//       "offer": 101999,
+//       "price": 110999,
+//       "stock": 3
+//     }
+//   ],
+//   "variantsModel": [
+//     "ROM",
+//     "Color"
+//   ],
+//   "stockManagement": true,
+//   "hidden": false,
+//   "id": 100
+// }
